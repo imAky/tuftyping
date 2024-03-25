@@ -4,6 +4,6 @@
 
 @layer base {
   body {
-    @apply bg-primary text-secondary min-h-screen flex-col justify-center items-center;
+    @apply bg-primary text-secondary min-h-screen flex-col;
   }
 }

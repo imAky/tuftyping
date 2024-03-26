@@ -4,6 +4,7 @@ import { isKeyboardCodeAllowed } from "../utils/helpers";
 const useTypings = (enabled: boolean) => {
   const [cursor, setCursor] = useState<number>(0);
   const [typed, setTyped] = useState<string>("");
+  const [totalTypedCharacter, setTotalTypedCharacter] = useState<string>("");
   const totalTyped = useRef(0);
 
   const keydownHandler = useCallback(
@@ -19,6 +20,7 @@ const useTypings = (enabled: boolean) => {
           break;
         default:
           setTyped((prev) => prev.concat(key));
+          setTotalTypedCharacter((prev) => prev.concat(key));
           setCursor((cursor) => cursor + 1);
           totalTyped.current += 1;
       }
@@ -33,6 +35,7 @@ const useTypings = (enabled: boolean) => {
 
   const resetTotalTyped = useCallback(() => {
     totalTyped.current = 0;
+    setTotalTypedCharacter("");
   }, []);
 
   useEffect(() => {
@@ -45,6 +48,7 @@ const useTypings = (enabled: boolean) => {
 
   return {
     typed,
+    totalTypedCharacter,
     cursor,
     clearTyped,
     resetTotalTyped,

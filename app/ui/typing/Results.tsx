@@ -1,17 +1,28 @@
 import { motion } from "framer-motion";
 import { State } from "@/app/hooks/useEngine";
-import { formatPercentage } from "@/app/utils/helpers";
 
 const Results = ({
   state,
   errors,
-  accuracyPercentage,
+  gameResults,
   total,
   className = "",
 }: {
   state: State;
   errors: number;
-  accuracyPercentage: number;
+  gameResults: {
+    wpmResult: {
+      wpm: number;
+      correctWords: number;
+    };
+    rawWpm: number;
+    typingMetrics: {
+      accuracy: number;
+      correctCharacters: number;
+      incorrectCharacters: number;
+    };
+    timing: number;
+  };
   total: number;
   className?: string;
 }) => {
@@ -19,47 +30,21 @@ const Results = ({
     return null;
   }
 
-  const initial = { opacity: 0 };
-  const animate = { opacity: 1 };
-
-  return (
-    <motion.ul
-      initial={initial}
-      animate={animate}
-      className={`flex flex-col items-center text-primary-400 space-y-3 ${className}`}
-    >
-      <motion.li
-        initial={initial}
-        animate={animate}
-        transition={{ duration: 0.3 }}
-        className="text-xl font-semibold"
-      >
-        Results
-      </motion.li>
-      <motion.li
-        initial={initial}
-        animate={animate}
-        transition={{ duration: 0.3, delay: 0.5 }}
-      >
-        Accuracy: {formatPercentage(accuracyPercentage)}
-      </motion.li>
-      <motion.li
-        initial={initial}
-        animate={animate}
-        transition={{ duration: 0.3, delay: 1 }}
-        className="text-red-500"
-      >
-        Errors: {errors}
-      </motion.li>
-      <motion.li
-        initial={initial}
-        animate={animate}
-        transition={{ duration: 0.3, delay: 1.4 }}
-      >
-        Typed: {total}
-      </motion.li>
-    </motion.ul>
-  );
+  return <div></div>;
 };
 
 export default Results;
+
+{
+  /* <ul>
+      <li>{errors}</li>
+      <li>{total}</li>
+      <li>{gameResults.wpmResult.wpm}</li>
+      <li>{gameResults.wpmResult.correctWords}</li>
+      <li>{gameResults.rawWpm}</li>
+      <li>{gameResults.timing}</li>
+      <li>{gameResults.typingMetrics.accuracy}</li>
+      <li>{gameResults.typingMetrics.incorrectCharacters}</li>
+      <li>{gameResults.typingMetrics.correctCharacters}</li>
+    </ul> */
+}

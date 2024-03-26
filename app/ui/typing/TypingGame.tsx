@@ -6,8 +6,6 @@ import WordsContainer from "./WordsContainer";
 import UserTypings from "./UserTypings";
 import RestartButton from "./RestartButton";
 import { Result } from "postcss";
-
-import { calculateAccuracyPercentage } from "@/app/utils/helpers";
 import Results from "./Results";
 
 const TypingGame = () => {
@@ -20,10 +18,8 @@ const TypingGame = () => {
     restart,
     totalTyped,
     adjustTimer,
+    gameResults,
   } = useEngine();
-
-  console.log("re-ren typing game");
-  console.log(`typinggame${timeLeft}`);
 
   return (
     <div className="flex flex-grow flex-col items-center mx-4">
@@ -46,9 +42,7 @@ const TypingGame = () => {
           className="mt-10"
           state={state}
           errors={errors}
-          accuracyPercentage={
-            calculateAccuracyPercentage(errors, totalTyped) || 0
-          }
+          gameResults={gameResults}
           total={totalTyped}
         />
       )}

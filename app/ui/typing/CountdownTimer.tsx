@@ -7,8 +7,6 @@ interface TimerProps {
 }
 
 const CountdownTimer = ({ timeLeft, adjustTimer, state }: TimerProps) => {
-  console.log("re-run- countdown timer");
-  console.log(`countdowntimer${timeLeft}`);
   return (
     <div className="flex items-center space-x-4 bg-gray-700  tracking-wider my-6 rounded-lg  shadow-md px-4 py-4">
       {state == "start" && (

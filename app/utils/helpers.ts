@@ -1,5 +1,3 @@
-import { error } from "console";
-
 export const isKeyboardCodeAllowed = (code: string) => {
   return (
     code.startsWith("Key") ||
@@ -11,7 +9,6 @@ export const isKeyboardCodeAllowed = (code: string) => {
 
 export const countErrors = (actual: string, expected: string) => {
   const expectedCharacters = expected.split("");
-
   return expectedCharacters.reduce((errors, expectedChar, i) => {
     const actualChar = actual[i];
     if (actualChar !== expectedChar) {
@@ -21,19 +18,29 @@ export const countErrors = (actual: string, expected: string) => {
   }, 0);
 };
 
-export const calculateAccuracyPercentage = (errors: number, total: number) => {
-  if (total > 0) {
-    const corrects = total - errors;
-    return (corrects / total) * 100;
-  }
-};
+// export const countWpm = (actual: string, expected: string): number => {
+//   // Remove any leading or trailing white spaces and split the strings into arrays of words
+//   const actualWords = actual.trim().split(/\s+/);
+//   const expectedWords = expected.trim().split(/\s+/);
 
-export const formatPercentage = (percentage: number) => {
-  return percentage.toFixed(0) + "%";
-};
+//   // Calculate the number of correctly typed characters
+//   const actualChars = actual.replace(/\s/g, "").length;
+//   const expectedChars = expected.replace(/\s/g, "").length;
 
-export const debug = (str: string) => {
-  if (process.env.NODE_ENV === "development") {
-    console.log(str);
-  }
-};
+//   // Calculate the WPM
+//   const wpm = (actualChars / 5 / (expectedChars / 5)) * 60;
+
+//   // Return the calculated WPM
+//   return wpm;
+// };
+
+// export const calculateAccuracyPercentage = (errors: number, total: number) => {
+//   if (total > 0) {
+//     const corrects = total - errors;
+//     return (corrects / total) * 100;
+//   }
+// };
+
+// export const formatPercentage = (percentage: number) => {
+//   return percentage.toFixed(0) + "%";
+// };

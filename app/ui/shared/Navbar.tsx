@@ -9,13 +9,13 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex justify-between item-center h-16 w-full overflow-hidden py-4 px-8   shadow-xl rounded-b-md z-20 bg-primary">
+    <nav className="flex justify-between item-center  w-full  py-4 px-8   shadow-xl rounded-b-md z-20 bg-primary">
       <div className="flex items-center space-x-8 ">
         <Link
           href="/"
-          className="text-yellow-400 font-extrabold text-2xl tracking-widest "
+          className="text-yellow-500 sm:text-4xl text-2xl font-bold tracking-wide"
         >
-          TufTyping
+          typechamp
         </Link>
         <Link
           href="/"
@@ -23,7 +23,7 @@ const Navbar = () => {
             pathname === "/" && "border-b-4 border-yellow-400"
           } p-1`}
         >
-          <FaKeyboard className="h-6 w-6" />
+          <FaKeyboard className="h-5 w-5" />
         </Link>
         <Link
           href="/contest"
@@ -31,7 +31,7 @@ const Navbar = () => {
             pathname.startsWith("/contest") && "border-b-4 border-yellow-400"
           } p-1`}
         >
-          <IoLogoGameControllerB className="h-6 w-6" />
+          <IoLogoGameControllerB className="h-5 w-5" />
         </Link>
         <Link
           href="/leaderboard"
@@ -40,16 +40,16 @@ const Navbar = () => {
             "border-b-4 border-yellow-400"
           } p-1`}
         >
-          <FaCrown className="h-6 w-6" />
+          <FaCrown className="h-5 w-5" />
         </Link>
       </div>
       <div className="flex items-center space-x-8 ">
         <div className="">
-          <HiSpeakerWave className="h-6 w-6" />
+          <HiSpeakerWave className="h-5 w-5" />
         </div>
         <div>
           <Link href="/dashboard" className="">
-            <CgProfile className="h-6 w-6" />
+            <CgProfile className="h-5 w-5" />
           </Link>
         </div>
       </div>

@@ -25,7 +25,7 @@ export type GameResults = {
   timing: number;
 };
 
-const NUMBER_OF_WORDS = 12;
+const NUMBER_OF_WORDS = 20;
 
 const useEngine = (initialCountSeconds: number = 30) => {
   const [state, setState] = useState<State>("start");

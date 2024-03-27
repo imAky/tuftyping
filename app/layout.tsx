@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Ubuntu_Mono } from "next/font/google";
+import { Inter, Roboto_Mono, Ubuntu_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./ui/shared/Navbar";
 import { FaKeyboard } from "react-icons/fa6";
 import Footer from "./ui/shared/Footer";
-const inter = Ubuntu_Mono({ subsets: ["latin"], weight: ["400", "700"] });
+const inter = Roboto_Mono({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",

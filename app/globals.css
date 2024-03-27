@@ -7,3 +7,24 @@
     @apply bg-primary text-secondary min-h-screen flex-col;
   }
 }
+
+/* Hide the scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: #272932; /* Light gray background color */
+}
+
+/* Define the scrollbar */
+::-webkit-scrollbar {
+  width: 4px; /* Set the width of the scrollbar */
+}
+
+/* Define the scrollbar handle */
+::-webkit-scrollbar-thumb {
+  background-color: #8e7c75; /* Medium gray color */
+  border-radius: 0px; /* Rounded corners for the scrollbar handle */
+}
+
+/* Define the scrollbar handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #8e7c75; /* Darker gray color on hover */
+}

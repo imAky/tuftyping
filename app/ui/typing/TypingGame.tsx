@@ -22,12 +22,14 @@ const TypingGame = () => {
   } = useEngine();
 
   return (
-    <div className="flex flex-grow flex-col items-center mx-4">
-      <CountdownTimer
-        timeLeft={timeLeft}
-        adjustTimer={adjustTimer}
-        state={state}
-      />
+    <div className="flex flex-grow  h-[625px] mb-8 flex-col items-center  ">
+      {state !== "finish" && (
+        <CountdownTimer
+          timeLeft={timeLeft}
+          adjustTimer={adjustTimer}
+          state={state}
+        />
+      )}
       {state !== "finish" ? (
         <WordsContainer>
           <GeneratedWords key={words} words={words} />
@@ -44,13 +46,16 @@ const TypingGame = () => {
           errors={errors}
           gameResults={gameResults}
           total={totalTyped}
+          onRestart={restart}
         />
       )}
       {}
-      <RestartButton
-        className={"mx-auto mt-10 text-slate-500"}
-        onRestart={restart}
-      />
+      {state !== "finish" && (
+        <RestartButton
+          className={"mx-auto mt-10 text-slate-500"}
+          onRestart={restart}
+        />
+      )}
     </div>
   );
 };

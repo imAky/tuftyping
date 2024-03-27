@@ -18,6 +18,10 @@ export const countErrors = (actual: string, expected: string) => {
   }, 0);
 };
 
+export const formattedScore = (score: number) => {
+  return parseFloat(score.toFixed(2));
+};
+
 // export const countWpm = (actual: string, expected: string): number => {
 //   // Remove any leading or trailing white spaces and split the strings into arrays of words
 //   const actualWords = actual.trim().split(/\s+/);

@@ -32,9 +32,10 @@ export const countWpm = (
   }
 
   const avgWords = correctCharacters / 5;
-  const wpm = Math.round((avgWords / totalTimeInSeconds) * 60);
 
-  return { wpm, correctWords };
+  const wpm = (avgWords / totalTimeInSeconds) * 60;
+
+  return { wpm: parseFloat(wpm.toFixed(2)), correctWords };
 };
 
 export const countRawWpm = (
@@ -80,11 +81,11 @@ export const calculateTypingMetrics = (
     }
 
     const totalCharacters = typedText.length;
-    accuracy = Math.round((correctCharacters / totalCharacters) * 100);
+    accuracy = (correctCharacters / totalCharacters) * 100;
   }
 
   return {
-    accuracy,
+    accuracy: parseFloat(accuracy.toFixed(2)),
     correctCharacters,
     incorrectCharacters,
   };

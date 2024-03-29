@@ -30,25 +30,27 @@ const TypingGame = () => {
           state={state}
         />
       )}
-      {state !== "finish" ? (
-        <WordsContainer>
-          <GeneratedWords key={words} words={words} />
-          <UserTypings
-            className="absolute inset-0"
-            words={words}
-            userInput={typed}
+      <div className="flex  justify-center items-start max-sm:-mt-4 ">
+        {state !== "finish" ? (
+          <WordsContainer>
+            <GeneratedWords key={words} words={words} />
+            <UserTypings
+              className="absolute inset-0 "
+              words={words}
+              userInput={typed}
+            />
+          </WordsContainer>
+        ) : (
+          <Results
+            className="mt-10"
+            state={state}
+            errors={errors}
+            gameResults={gameResults}
+            total={totalTyped}
+            onRestart={restart}
           />
-        </WordsContainer>
-      ) : (
-        <Results
-          className="mt-10"
-          state={state}
-          errors={errors}
-          gameResults={gameResults}
-          total={totalTyped}
-          onRestart={restart}
-        />
-      )}
+        )}
+      </div>
       {}
       {state !== "finish" && (
         <RestartButton

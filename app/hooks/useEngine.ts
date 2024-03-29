@@ -145,15 +145,15 @@ const useEngine = (initialCountSeconds: number = 30) => {
 
   const adjustTimer = useCallback(
     (increment: number) => {
-      console.log("working");
-      const increments = [15, 30, 60, 120, 240, 300, 360];
-      const currentIndex = increments.indexOf(countdownSeconds);
-      const newIndex = Math.max(
-        0,
-        Math.min(currentIndex + increment, increments.length - 1)
-      );
-      setCountdownSeconds(increments[newIndex]);
-      restart();
+      let newCountdownSeconds = countdownSeconds;
+      if (countdownSeconds >= 60) {
+        newCountdownSeconds += increment * 60;
+      } else {
+        newCountdownSeconds += increment * (countdownSeconds < 30 ? 15 : 30);
+      }
+
+      newCountdownSeconds = Math.max(newCountdownSeconds, 15);
+      setCountdownSeconds(newCountdownSeconds);
     },
     [countdownSeconds]
   );

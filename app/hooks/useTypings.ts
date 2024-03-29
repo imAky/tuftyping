@@ -8,7 +8,8 @@ const useTypings = (enabled: boolean) => {
   const totalTyped = useRef(0);
 
   const keydownHandler = useCallback(
-    ({ key, code }: KeyboardEvent) => {
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      const { key, code } = event;
       if (!enabled || !isKeyboardCodeAllowed(code)) {
         return;
       }
@@ -38,14 +39,6 @@ const useTypings = (enabled: boolean) => {
     setTotalTypedCharacter("");
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("keydown", keydownHandler);
-
-    return () => {
-      window.removeEventListener("keydown", keydownHandler);
-    };
-  }, [keydownHandler]);
-
   return {
     typed,
     totalTypedCharacter,
@@ -53,6 +46,7 @@ const useTypings = (enabled: boolean) => {
     clearTyped,
     resetTotalTyped,
     totalTyped: totalTyped.current,
+    keydownHandler,
   };
 };
 

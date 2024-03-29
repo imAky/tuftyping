@@ -5,6 +5,7 @@ const useCountdown = (seconds: number) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const hasTimerEnd = timeLeft <= 0;
   const isRunning = intervalRef.current != null;
+  console.log(`useCountdown${seconds}`);
 
   const startCountdown = useCallback(() => {
     if (!hasTimerEnd && !isRunning) {

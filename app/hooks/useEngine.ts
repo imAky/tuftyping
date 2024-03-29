@@ -42,6 +42,7 @@ const useEngine = (initialCountSeconds: number = 30) => {
     totalTyped,
     totalTypedCharacter,
     resetTotalTyped,
+    keydownHandler,
   } = useTypings(state !== "finish");
 
   const [errors, setErrors] = useState(0);
@@ -168,6 +169,7 @@ const useEngine = (initialCountSeconds: number = 30) => {
     totalTyped,
     adjustTimer,
     gameResults,
+    keydownHandler,
   };
 };
 

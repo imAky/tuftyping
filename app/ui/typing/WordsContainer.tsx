@@ -9,6 +9,7 @@ const WordsContainer = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       className="bg-secondary-2 text-stone-400 p-8 w-11/12 rounded-lg shadow-md  border-gray-300 outline-none focus:ring-0"
+      ref={containerRef}
       tabIndex={0}
       onClick={handleFocus}
     >

@@ -24,6 +24,16 @@ export const formattedScore = (score: number) => {
   return parseFloat(score.toFixed(2));
 };
 
+export const isMobile = () => {
+  if (typeof window !== "undefined") {
+    const userAgent = navigator.userAgent;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgent
+    );
+  }
+  return false; // Default to false if window or navigator is not available
+};
+
 // export const countWpm = (actual: string, expected: string): number => {
 //   // Remove any leading or trailing white spaces and split the strings into arrays of words
 //   const actualWords = actual.trim().split(/\s+/);

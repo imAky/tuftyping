@@ -1,15 +1,7 @@
 import React, { KeyboardEventHandler, useRef, useEffect } from "react";
+import { isMobile } from "@/app/utils/helpers";
 
 // Define the isMobile function outside of the component
-const isMobile = () => {
-  if (typeof window !== "undefined") {
-    const userAgent = navigator.userAgent;
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      userAgent
-    );
-  }
-  return false; // Default to false if window or navigator is not available
-};
 
 const WordsContainer = ({
   children,
@@ -37,7 +29,55 @@ const WordsContainer = ({
   };
 
   const handleKeydown: KeyboardEventHandler<HTMLInputElement> = (event) => {
-    keydownHandler(event);
+    if (!isMobile()) {
+      keydownHandler(event);
+    }
+  };
+  const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
+    if (isMobile()) {
+      const input = event.target as HTMLInputElement;
+      const currentValue = input.value;
+
+      // If the input length is 0 and backspace is pressed, treat it as a backspace key
+      if (currentValue.length === 0) {
+        keydownHandler({
+          key: "Backspace",
+          code: "Backspace",
+          nativeEvent: event.nativeEvent,
+        } as React.KeyboardEvent<HTMLInputElement>);
+        return;
+      }
+
+      const previousValue = input.getAttribute("data-previous-value") || "";
+      input.setAttribute("data-previous-value", currentValue);
+
+      // Check if the length of the current value is less than the previous value
+      if (currentValue.length < previousValue.length) {
+        // If so, it indicates that the backspace key was pressed
+        keydownHandler({
+          key: "Backspace",
+          code: "Backspace",
+          nativeEvent: event.nativeEvent,
+        } as React.KeyboardEvent<HTMLInputElement>);
+      } else {
+        // Otherwise, treat it as a regular character input
+        const key = currentValue.slice(-1);
+        let code = "";
+        if (key === " ") {
+          code = "Space";
+        } else if (!isNaN(parseInt(key))) {
+          code = "Digit" + key;
+        } else {
+          code = "Key" + key.toUpperCase();
+        }
+        const syntheticEvent = {
+          key,
+          code,
+          nativeEvent: event.nativeEvent,
+        };
+        keydownHandler(syntheticEvent as React.KeyboardEvent<HTMLInputElement>);
+      }
+    }
   };
 
   // Function to handle blur event on the input
@@ -54,9 +94,11 @@ const WordsContainer = ({
       onClick={handleContainerClick} // Always attach handleContainerClick
     >
       <input
-        className="w-full h-full absolute inset-0  cursor-text"
+        className="w-full h-full absolute inset-0  cursor-text opacity-0"
         ref={inputRef}
-        onKeyDown={handleKeydown}
+        readOnly={!isMobile()}
+        onKeyDown={!isMobile() ? handleKeydown : undefined}
+        onInput={isMobile() ? handleInput : undefined}
         onBlur={handleBlur} // Handle blur event
       />
       <div className="relative text-2xl tracking-wider max-w-5xl leading-relaxed break-all">

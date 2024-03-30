@@ -29,8 +29,9 @@ const WordsContainer = ({
   }, []);
 
   // Function to handle click on the container
-  const handleContainerClick = () => {
+  const handleContainerClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile() && inputRef.current) {
+      event?.preventDefault();
       inputRef.current.focus();
     }
   };

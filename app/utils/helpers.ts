@@ -1,10 +1,11 @@
 export const isKeyboardCodeAllowed = (code: string) => {
-  return (
+  const result =
     code.startsWith("Key") ||
     code.startsWith("Digit") ||
     code === "Backspace" ||
-    code === "Space"
-  );
+    code === "Space";
+  console.log(result);
+  return result;
 };
 
 export const countErrors = (actual: string, expected: string) => {

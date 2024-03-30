@@ -11,6 +11,7 @@ const useTypings = (enabled: boolean) => {
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       const { key, code } = event;
       console.log(`begin : ${{ key, code }}`);
+      console.log(event);
       if (!enabled || !isKeyboardCodeAllowed(code)) {
         return;
       }

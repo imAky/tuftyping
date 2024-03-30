@@ -10,9 +10,11 @@ const useTypings = (enabled: boolean) => {
   const keydownHandler = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       const { key, code } = event;
+      console.log(`begin : ${{ key, code }}`);
       if (!enabled || !isKeyboardCodeAllowed(code)) {
         return;
       }
+      console.log(`end : ${{ key, code }}`);
       switch (key) {
         case "Backspace":
           setTyped((prev) => prev.slice(0, -1));

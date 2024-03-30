@@ -20,27 +20,27 @@ const WordsContainer = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Focus the input element initially on both desktop and mobile
+  // Focus the input element when the component mounts or updates,
+  // but only if it's not a mobile device
   useEffect(() => {
-    if (inputRef.current) {
+    if (!isMobile() && inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
 
-  // Handle click on the container for mobile focus
+  // Function to handle click on the container
   const handleContainerClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile() && inputRef.current) {
-      event.preventDefault(); // Prevent default click behavior
-      inputRef.current.focus(); // Focus the input element
+      event?.preventDefault();
+      inputRef.current.focus();
     }
   };
 
-  // Handle keydown events
   const handleKeydown: KeyboardEventHandler<HTMLInputElement> = (event) => {
     keydownHandler(event);
   };
 
-  // Handle blur event to maintain focus on the input
+  // Function to handle blur event on the input
   const handleBlur = () => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -50,14 +50,14 @@ const WordsContainer = ({
   return (
     <div
       className="relative bg-secondary-2 text-stone-400 p-8 w-11/12 rounded-lg shadow-md border-gray-300 outline-none focus:ring-0"
-      tabIndex={0} // Allow keyboard navigation
-      onClick={handleContainerClick} // Handle container click for mobile
+      tabIndex={0}
+      onClick={handleContainerClick} // Always attach handleContainerClick
     >
       <input
-        className="w-full h-full absolute inset-0 cursor-text"
+        className="w-full h-full absolute inset-0  cursor-text"
         ref={inputRef}
         onKeyDown={handleKeydown}
-        onBlur={handleBlur} // Handle blur events
+        onBlur={handleBlur} // Handle blur event
       />
       <div className="relative text-2xl tracking-wider max-w-5xl leading-relaxed break-all">
         {children}

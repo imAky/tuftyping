@@ -9,8 +9,8 @@ const WordsContainer = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const hanldeContainerClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+  const handleContainerClick = () => {
+    if (inputRef.current) {
       inputRef.current.focus();
     }
   };
@@ -19,21 +19,26 @@ const WordsContainer = ({
     keydownHandler(event);
   };
 
+  const isMobile = () => {
+    const userAgent = navigator.userAgent;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgent
+    );
+  };
+
   return (
     <div
-      className="bg-secondary-2 text-stone-400 p-8 w-11/12 rounded-lg shadow-md border-gray-300 outline-none focus:ring-0"
+      className="relative bg-secondary-2 text-stone-400 p-8 w-11/12 rounded-lg shadow-md border-gray-300 outline-none focus:ring-0"
       tabIndex={0}
-      onClick={hanldeContainerClick}
+      onClick={isMobile() ? handleContainerClick : undefined}
     >
       <input
-        className="w-1 h-1 absolute inset-0 opacity-0 cursor-text"
+        className="w-full h-full absolute inset-0 opacity-0 cursor-text"
         ref={inputRef}
         onKeyDown={handleKeydown}
+        autoFocus={!isMobile()} // Autofocus only if not on a mobile device
       />
-      <div
-        style={{ pointerEvents: "none" }}
-        className="relative text-2xl tracking-wider max-w-5xl leading-relaxed break-all pointer-events: none" // Apply pointer-events: none here
-      >
+      <div className="relative text-2xl tracking-wider max-w-5xl leading-relaxed break-all">
         {children}
       </div>
     </div>

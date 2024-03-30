@@ -20,10 +20,13 @@ const WordsContainer = ({
   };
 
   const isMobile = () => {
-    const userAgent = navigator.userAgent;
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      userAgent
-    );
+    if (typeof window !== "undefined") {
+      const userAgent = navigator.userAgent;
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        userAgent
+      );
+    }
+    return false; // Default to false if window or navigator is not available
   };
 
   return (

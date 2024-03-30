@@ -2,10 +2,13 @@ import React, { KeyboardEventHandler, useRef, useEffect } from "react";
 
 // Define the isMobile function outside of the component
 const isMobile = () => {
-  const userAgent = navigator.userAgent;
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    userAgent
-  );
+  if (typeof window !== "undefined") {
+    const userAgent = navigator.userAgent;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgent
+    );
+  }
+  return false; // Default to false if window or navigator is not available
 };
 
 const WordsContainer = ({
@@ -17,19 +20,19 @@ const WordsContainer = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Focus the input element on mobile devices using autoFocus
-  // This is generally the recommended approach.
+  // Focus the input element when the component mounts or updates,
+  // but only if it's not a mobile device
   useEffect(() => {
-    if (isMobile() && inputRef.current) {
+    if (!isMobile() && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isMobile]);
+  }, []);
 
   // Function to handle click on the container
-  // Prevent default behavior to allow focus on the input field (fallback)
   const handleContainerClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isMobile() && inputRef.current) {
-      event.preventDefault();
+      event?.preventDefault();
+      inputRef.current.focus();
     }
   };
 
@@ -40,22 +43,21 @@ const WordsContainer = ({
   // Function to handle blur event on the input
   const handleBlur = () => {
     if (inputRef.current) {
-      inputRef.current.focus(); // Maintain focus on input
+      inputRef.current.focus();
     }
   };
 
   return (
     <div
       className="relative bg-secondary-2 text-stone-400 p-8 w-11/12 rounded-lg shadow-md border-gray-300 outline-none focus:ring-0"
-      tabIndex={0} // Allow keyboard navigation
-      onClick={handleContainerClick}
+      tabIndex={0}
+      onClick={handleContainerClick} // Always attach handleContainerClick
     >
       <input
         className="w-full h-full absolute inset-0 opacity-0 cursor-text"
         ref={inputRef}
         onKeyDown={handleKeydown}
-        onBlur={handleBlur}
-        autoFocus // Add autoFocus for mobile focus handling
+        onBlur={handleBlur} // Handle blur event
       />
       <div className="relative text-2xl tracking-wider max-w-5xl leading-relaxed break-all">
         {children}

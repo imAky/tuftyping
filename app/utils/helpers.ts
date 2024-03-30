@@ -5,6 +5,7 @@ export const isKeyboardCodeAllowed = (code: string) => {
     code === "Backspace" ||
     code === "Space";
   console.log(result);
+  console.log(code);
   return result;
 };
 

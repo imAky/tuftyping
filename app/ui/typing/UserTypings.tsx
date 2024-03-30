@@ -35,7 +35,7 @@ const Character = ({
   actual: string;
   expected: string;
 }) => {
-  const isCorrect = actual === expected;
+  const isCorrect = actual.toLocaleLowerCase() === expected.toLocaleLowerCase();
   const isWhiteSpace = expected === " ";
   const { isMuted } = useSound();
 

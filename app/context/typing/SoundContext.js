@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from "react";
 const SoundContext = createContext();
 
 export const SoundProvider = ({ children }) => {
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
   const toggleMenu = () => {
     setIsMuted((prevState) => !prevState);

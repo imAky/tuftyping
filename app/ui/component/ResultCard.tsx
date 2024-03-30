@@ -20,7 +20,7 @@ const ResultCard = ({
   const [showTooltip, setShowToolTip] = useState<boolean>(false);
   return (
     <div
-      className="flex flex-col w-64 bg-yellow-600 mx-4 my-4  rounded-xl shadow-md relative"
+      className="flex flex-col w-64   bg-yellow-600 mx-4 my-4 rounded-xl shadow-md relative"
       onMouseEnter={() => setShowToolTip(true)}
       onMouseLeave={() => setShowToolTip(false)}
     >

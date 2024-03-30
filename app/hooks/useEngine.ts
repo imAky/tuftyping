@@ -29,11 +29,10 @@ const useEngine = (initialCountSeconds: number = 30) => {
   const [state, setState] = useState<State>("start");
   const [countdownSeconds, setCountdownSeconds] =
     useState<number>(initialCountSeconds);
-  const [numberOfWords, setNumberOfWords] = useState<number>(20);
 
   const { timeLeft, startCountdown, resetCountdown } =
     useCountdown(countdownSeconds);
-  const { words, updateWords } = useWords(numberOfWords);
+  const { words, updateWords } = useWords(isMobile() ? 5 : 20);
   const {
     cursor,
     typed,
@@ -157,10 +156,6 @@ const useEngine = (initialCountSeconds: number = 30) => {
     },
     [countdownSeconds]
   );
-
-  useEffect(() => {
-    setNumberOfWords(isMobile() ? 5 : 20);
-  }, []);
 
   return {
     state,

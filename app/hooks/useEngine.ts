@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { countErrors } from "../utils/helpers";
+import { countErrors, isMobile } from "../utils/helpers";
 import useCountdown from "./useCountdown";
 import useTypings from "./useTypings";
 import useWords from "./useWords";
@@ -25,16 +25,15 @@ export type GameResults = {
   timing: number;
 };
 
-const NUMBER_OF_WORDS = 20;
-
 const useEngine = (initialCountSeconds: number = 30) => {
   const [state, setState] = useState<State>("start");
   const [countdownSeconds, setCountdownSeconds] =
     useState<number>(initialCountSeconds);
+  const [numberOfWords, setNumberOfWords] = useState<number>(20);
 
   const { timeLeft, startCountdown, resetCountdown } =
     useCountdown(countdownSeconds);
-  const { words, updateWords } = useWords(NUMBER_OF_WORDS);
+  const { words, updateWords } = useWords(numberOfWords);
   const {
     cursor,
     typed,
@@ -158,6 +157,10 @@ const useEngine = (initialCountSeconds: number = 30) => {
     },
     [countdownSeconds]
   );
+
+  useEffect(() => {
+    setNumberOfWords(isMobile() ? 5 : 20);
+  }, []);
 
   return {
     state,

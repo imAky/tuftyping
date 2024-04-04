@@ -1,6 +1,8 @@
+import { getServerSession } from "next-auth";
 import TypingGame from "./ui/typing/TypingGame";
+import { options } from "./api/auth/[...nextauth]/options";
 
-const Home = () => {
+export default async function Home() {
   return (
     <div className="flex h-full flex-grow justify-center">
       <div className="hidden md:flex flex-col   items-center   xl:w-[200px]  lg:w-1/5 md:w-1/4  bg-gray-700 mr-4">
@@ -15,6 +17,4 @@ const Home = () => {
       </div>
     </div>
   );
-};
-
-export default Home;
+}

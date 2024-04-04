@@ -1,3 +1,10 @@
-export default function Dashboard() {
-  return <h1>Dashboard</h1>;
+import SideNav from "../ui/dashboard/sidenav";
+
+export default async function DashBoard() {
+  return (
+    <div className="flex  h-screen">
+      <SideNav />
+      <div className=" flex-grow bg-slate-50">Center</div>
+    </div>
+  );
 }

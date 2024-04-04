@@ -1,4 +1,3 @@
-"use client";
 import { ReactElement, useState } from "react";
 import Tooltip from "./Tooltip";
 

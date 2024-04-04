@@ -1,23 +1,23 @@
 "use server";
 
+import { getServerSession } from "next-auth";
 import Score from "../models/Score";
 import User from "../models/User";
 import connectDB from "./connection";
 import { GameResultsTypes } from "./definition";
 import { redirect } from "next/navigation";
+import { options } from "../api/auth/[...nextauth]/options";
 
-export async function saveResult(
-  gameResults: GameResultsTypes,
-  userEmail: string
-) {
+export async function saveResult(gameResults: GameResultsTypes) {
+  const session = await getServerSession(options);
   try {
-    await connectDB();
-
-    const user = await User.findOne({ email: userEmail });
-
-    if (!user) {
+    if (!session?.user) {
       throw new Error("User not found");
     }
+
+    await connectDB();
+
+    const user = await User.findOne({ email: session.user.email });
 
     const newScore = new Score({
       user: user._id,

@@ -24,7 +24,7 @@ const ResultButton = ({ gameResults }: { gameResults: GameResultsTypes }) => {
       if (session) {
         if (session.user?.email) {
           setIsSaving(true);
-          const response = await saveResult(gameResults, session.user?.email);
+          const response = await saveResult(gameResults);
           if (response) {
             setFeedBack(response);
           }

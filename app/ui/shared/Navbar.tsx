@@ -7,18 +7,28 @@ import { useParams, usePathname } from "next/navigation";
 import { useSound } from "@/app/context/typing/SoundContext";
 import { useRef } from "react";
 import { IoInformation } from "react-icons/io5";
+import { useSession, signIn, signOut } from "next-auth/react";
+
+import SignInButton from "../component/SignInButton";
+import SignOutButton from "../component/SiignOutButton";
+import Image from "next/image";
+import { Spinner2 } from "../component/Spinner";
+import Profile from "../component/Profile";
+
 const Navbar = () => {
   const { isMuted, toggleMenu } = useSound();
   const pathname = usePathname();
   const soundRef = useRef<HTMLButtonElement>(null);
+  const { data: session, status } = useSession();
 
   const hadleSoundClick = () => {
     soundRef.current?.blur();
     toggleMenu();
   };
+  if (session) console.log(session);
 
   return (
-    <nav className="flex justify-between item-center  w-full  py-2 sm:py-4 sm:px-8 px-4 shadow-xl rounded-b-md z-20 bg-primary-1">
+    <nav className="relative  flex justify-between item-center  w-full  py-2 sm:py-4 sm:px-8 px-4 shadow-xl rounded-b-md z-20 bg-primary-1">
       <div className="flex items-center sm:space-x-8 space-x-4">
         <Link
           href="/"
@@ -69,9 +79,17 @@ const Navbar = () => {
           )}
         </button>
         <div>
-          <Link href="/dashboard" className="">
-            <FaUser className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
-          </Link>
+          {status === "loading" ? (
+            <div className="relative">
+              <Spinner2 />
+            </div>
+          ) : session ? (
+            <div>
+              <Profile user={session.user} pathname={pathname} />
+            </div>
+          ) : (
+            <SignInButton />
+          )}
         </div>
       </div>
     </nav>

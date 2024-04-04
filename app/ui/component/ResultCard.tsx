@@ -37,7 +37,7 @@ const ResultCard = ({
           {title === "acc" && "%"}
           {title === "time" && "s"}
         </span>
-        {secondary && (
+        {secondary !== undefined && (
           <span className="text-red-900 text-6xl font-medium">
             /{secondary}
           </span>

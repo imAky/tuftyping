@@ -6,19 +6,20 @@ import WordsContainer from "./WordsContainer";
 import UserTypings from "./UserTypings";
 import RestartButton from "./RestartButton";
 import Results from "./Results";
+import { useEffect, useState } from "react";
 
 const TypingGame = () => {
   const {
     words,
     typed,
     timeLeft,
-    errors,
+
     state,
     restart,
-    totalTyped,
+
     adjustTimer,
     gameResults,
-    keydownHandler, // Add keydownHandler here
+    keydownHandler,
   } = useEngine();
 
   return (
@@ -34,7 +35,6 @@ const TypingGame = () => {
         {state !== "finish" ? (
           <WordsContainer keydownHandler={keydownHandler}>
             {" "}
-            {/* Pass keydownHandler */}
             <GeneratedWords key={words} words={words} />
             <UserTypings
               className="absolute inset-0"
@@ -46,9 +46,7 @@ const TypingGame = () => {
           <Results
             className="mt-10"
             state={state}
-            errors={errors}
             gameResults={gameResults}
-            total={totalTyped}
             onRestart={restart}
           />
         )}

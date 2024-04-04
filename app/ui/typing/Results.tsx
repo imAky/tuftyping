@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
 import useEngine, { State } from "@/app/hooks/useEngine";
 import ResultCard from "../component/ResultCard";
-import { ButtonInline } from "@/app/ui/component/Button";
+import { ResultButton } from "@/app/ui/component/ResultButton";
 import { formattedScore } from "@/app/utils/helpers";
+import { GameResultsTypes } from "@/app/lib/definition";
+
 import {
   FaBackward,
   FaBolt,
@@ -13,31 +14,16 @@ import {
 } from "react-icons/fa";
 import { LuTarget, LuWholeWord } from "react-icons/lu";
 import { randomBytes } from "crypto";
+import SaveButton from "../component/SaveButton";
 
 const Results = ({
   state,
-  errors,
   gameResults,
-  total,
   className = "",
   onRestart,
 }: {
   state: State;
-  errors: number;
-  gameResults: {
-    wpmResult: {
-      wpm: number;
-      correctWords: number;
-    };
-    rawWpm: number;
-    typingMetrics: {
-      accuracy: number;
-      correctCharacters: number;
-      incorrectCharacters: number;
-    };
-    timing: number;
-  };
-  total: number;
+  gameResults: GameResultsTypes;
   className?: string;
   onRestart?: () => void;
 }) => {
@@ -95,9 +81,12 @@ const Results = ({
         <ResultCard
           title="characters"
           icon={<LuWholeWord />}
-          score={total - errors}
+          score={
+            gameResults.typingMetrics.totalTyped -
+            gameResults.typingMetrics.errors
+          }
           text={`correct, incorrect`}
-          secondary={errors}
+          secondary={gameResults.typingMetrics.errors}
         />
         <ResultCard
           title="key"
@@ -114,7 +103,7 @@ const Results = ({
           score={Math.max(
             gameResults.typingMetrics.correctCharacters +
               gameResults.typingMetrics.incorrectCharacters -
-              total,
+              gameResults.typingMetrics.totalTyped,
             0
           )}
           text={`backspace`}
@@ -126,9 +115,9 @@ const Results = ({
           text={`${gameResults.timing}s`}
         />
       </div>
-      <div className="mb-3 ">
-        <ButtonInline title="Restart" handleRestart={onRestart} />
-        <ButtonInline title="Save" />
+      <div className="mb-3 flex justify-center">
+        <ResultButton title="Restart" handleRestart={onRestart}></ResultButton>
+        <SaveButton gameResults={gameResults} />
       </div>
     </div>
   );

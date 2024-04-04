@@ -1,18 +1,47 @@
-export interface wpmResult {
-  wpm: number;
-  correctWords: number;
-}
+"use server";
 
-export const countWpm = (
+import { GameResultsTypes } from "../lib/definition";
+
+export const GameResults = async (
+  modifyChar: string,
   actual: string,
   expected: string,
   totalTimeInSeconds: number
-): wpmResult => {
+): Promise<GameResultsTypes> => {
   const expectedWords = expected.trim().split(/\s+/);
   const actualWords = actual.trim().split(/\s+/);
+  const typedText = actual.trim();
+  const expectedText = expected.trim();
+  const modifyText = modifyChar.trim();
 
-  let correctCharacters = 0;
+  let corrCharMetric = 0;
   let correctWords = 0;
+
+  //calculating raw
+  let rawCharacter = 0;
+
+  // typing Metrics
+  let correctCharacters = 0;
+  let incorrectCharacters = 0;
+  let accuracy = 0;
+
+  // errors
+  let errors = 0;
+  let totalTyped = modifyText.length;
+
+  for (let i = 0; i < Math.min(modifyText.length, expectedText.length); i++) {
+    if (modifyText[i] !== expectedText[i]) {
+      errors++;
+    }
+  }
+
+  for (let i = 0; i < Math.min(typedText.length, expectedText.length); i++) {
+    if (typedText[i] === expectedText[i]) {
+      correctCharacters++;
+    } else {
+      incorrectCharacters++;
+    }
+  }
 
   for (let i = 0; i < expectedWords.length && i < actualWords.length; i++) {
     const expectedWord = expectedWords[i];
@@ -21,72 +50,34 @@ export const countWpm = (
     if (expectedWord === actualWord) {
       correctWords++;
     }
+    rawCharacter += Math.max(expectedWord.length, actualWord.length);
 
     for (let j = 0; j < Math.min(expectedWord.length, actualWord.length); j++) {
       if (expectedWord[j] === actualWord[j]) {
-        correctCharacters++;
+        corrCharMetric++;
       } else {
         break;
       }
     }
   }
 
-  const avgWords = correctCharacters / 5;
+  const avgWords = corrCharMetric / 5;
+  const avgRawWords = rawCharacter / 5;
 
   const wpm = (avgWords / totalTimeInSeconds) * 60;
 
-  return { wpm: parseFloat(wpm.toFixed(2)), correctWords };
-};
+  const totalCharMetric = typedText.length;
+  accuracy = (correctCharacters / totalCharMetric) * 100;
 
-export const countRawWpm = (
-  actual: string,
-  expected: string,
-  totalTimeInSeconds: number
-): number => {
-  const expectedWords = expected.trim().split(/\s+/);
-  const actualWords = actual.trim().split(/\s+/);
-
-  let totalCharacters = 0;
-
-  for (let i = 0; i < expectedWords.length && i < actualWords.length; i++) {
-    const expectedWord = expectedWords[i];
-    const actualWord = actualWords[i];
-
-    totalCharacters += Math.max(expectedWord.length, actualWord.length);
-  }
-  const avgWords = totalCharacters / 5;
-  const rawWpm = Math.round(avgWords / (totalTimeInSeconds / 60));
-  return rawWpm;
-};
-
-export const calculateTypingMetrics = (
-  typedText: string,
-  expectedText: string
-): {
-  accuracy: number;
-  correctCharacters: number;
-  incorrectCharacters: number;
-} => {
-  typedText = typedText.trim();
-  expectedText = expectedText.trim();
-
-  let correctCharacters = 0;
-  let incorrectCharacters = 0;
-  let accuracy = 0;
-  for (let i = 0; i < Math.min(typedText.length, expectedText.length); i++) {
-    if (typedText[i] === expectedText[i]) {
-      correctCharacters++;
-    } else {
-      incorrectCharacters++;
-    }
-
-    const totalCharacters = typedText.length;
-    accuracy = (correctCharacters / totalCharacters) * 100;
-  }
-
-  return {
-    accuracy: parseFloat(accuracy.toFixed(2)),
+  const wpmResult = { wpm: parseFloat(wpm.toFixed(2)), correctWords };
+  const rawWpm = Math.round((avgRawWords / totalTimeInSeconds) * 60);
+  const typingMetrics = {
+    accuracy,
     correctCharacters,
     incorrectCharacters,
+    errors,
+    totalTyped,
   };
+
+  return { wpmResult, rawWpm, typingMetrics, timing: totalTimeInSeconds };
 };

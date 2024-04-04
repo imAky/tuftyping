@@ -3,27 +3,10 @@ import { countErrors, isMobile } from "../utils/helpers";
 import useCountdown from "./useCountdown";
 import useTypings from "./useTypings";
 import useWords from "./useWords";
-import {
-  calculateTypingMetrics,
-  countRawWpm,
-  countWpm,
-} from "../utils/results";
+import { GameResults } from "../utils/results";
+import { GameResultsTypes } from "../lib/definition";
 
 export type State = "start" | "run" | "finish";
-
-export type GameResults = {
-  wpmResult: {
-    wpm: number;
-    correctWords: number;
-  };
-  rawWpm: number;
-  typingMetrics: {
-    accuracy: number;
-    correctCharacters: number;
-    incorrectCharacters: number;
-  };
-  timing: number;
-};
 
 const useEngine = (initialCountSeconds: number = 30) => {
   const [state, setState] = useState<State>("start");
@@ -36,17 +19,15 @@ const useEngine = (initialCountSeconds: number = 30) => {
   const {
     cursor,
     typed,
+    totalCorrChar,
     clearTyped,
-    totalTyped,
     totalTypedCharacter,
     resetTotalTyped,
     keydownHandler,
   } = useTypings(state !== "finish");
 
-  const [errors, setErrors] = useState(0);
-
   const [totalWordsGenerated, setTotalWordsGenerated] = useState<string>("");
-  const [gameResults, setGameResults] = useState<GameResults>({
+  const [gameResults, setGameResults] = useState<GameResultsTypes>({
     wpmResult: {
       wpm: 0,
       correctWords: 0,
@@ -56,6 +37,8 @@ const useEngine = (initialCountSeconds: number = 30) => {
       accuracy: 0,
       correctCharacters: 0,
       incorrectCharacters: 0,
+      errors: 0,
+      totalTyped: 0,
     },
     timing: 0,
   });
@@ -68,15 +51,10 @@ const useEngine = (initialCountSeconds: number = 30) => {
     resetTotalTyped();
     setTotalWordsGenerated("");
     setState("start");
-    setErrors(0);
+
     updateWords();
     clearTyped();
   }, [clearTyped, updateWords, resetCountdown, resetTotalTyped]);
-
-  const sumErrors = useCallback(() => {
-    const wordsReached = words.substring(0, Math.min(cursor, words.length));
-    setErrors((prevErrors) => prevErrors + countErrors(typed, wordsReached));
-  }, [typed, words, cursor]);
 
   useEffect(() => {
     if (!isFirstRender.current) {
@@ -88,8 +66,6 @@ const useEngine = (initialCountSeconds: number = 30) => {
     }
   }, [words]);
 
-  // as soon the user start the first letters, we start
-
   useEffect(() => {
     if (isStarting) {
       setState("run");
@@ -97,37 +73,23 @@ const useEngine = (initialCountSeconds: number = 30) => {
     }
   }, [isStarting, startCountdown]);
 
-  // when the time is up, we've finished
   useEffect(() => {
     if (!timeLeft && state === "run") {
-      console.log(`typed character ${totalTypedCharacter}`);
-      console.log(`words character ${totalWordsGenerated}`);
+      const calculateResult = async () => {
+        const gameresult = await GameResults(
+          totalCorrChar,
+          totalTypedCharacter,
+          totalWordsGenerated,
+          countdownSeconds
+        );
 
-      const typingMetrics = calculateTypingMetrics(
-        totalTypedCharacter,
-        totalWordsGenerated
-      );
-      const wpmResult = countWpm(
-        totalTypedCharacter,
-        totalWordsGenerated,
-        countdownSeconds
-      );
-      const rawWpm = countRawWpm(
-        totalTypedCharacter,
-        totalWordsGenerated,
-        countdownSeconds
-      );
+        setGameResults(gameresult);
 
-      setGameResults({
-        wpmResult,
-        rawWpm,
-        typingMetrics,
-        timing: countdownSeconds,
-      });
-      setState("finish");
-      sumErrors();
+        setState("finish");
+      };
+      calculateResult();
     }
-  }, [timeLeft, state, sumErrors]);
+  }, [timeLeft, state]);
 
   /**
    * when the current words are all filled up, we generate and show another set of words
@@ -136,11 +98,11 @@ const useEngine = (initialCountSeconds: number = 30) => {
   useEffect(() => {
     if (areWordsFinished) {
       console.log(`typed ${typed}`);
-      sumErrors();
+      // sumErrors();
       updateWords();
       clearTyped();
     }
-  }, [clearTyped, areWordsFinished, updateWords, sumErrors]);
+  }, [clearTyped, areWordsFinished, updateWords]);
 
   const adjustTimer = useCallback(
     (increment: number) => {
@@ -161,10 +123,11 @@ const useEngine = (initialCountSeconds: number = 30) => {
     state,
     words,
     typed,
-    errors,
+    totalCorrChar,
+
     restart,
     timeLeft,
-    totalTyped,
+
     adjustTimer,
     gameResults,
     keydownHandler,

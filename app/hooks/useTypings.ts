@@ -13,6 +13,9 @@ const useTypings = (enabled: boolean) => {
       if (!enabled || !isKeyboardCodeAllowed(code)) {
         return;
       }
+      if (key === " ") {
+        event.preventDefault(); // Prevent default behavior for space bar
+      }
       console.log(`end : ${{ key, code }}`);
       switch (key) {
         case "Backspace":

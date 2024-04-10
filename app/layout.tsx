@@ -18,18 +18,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body
-          className={`${Roboto.className} antialiased flex flex-col min-h-screen`}
-        >
-          <SoundProvider>
+    <html lang="en">
+      <body
+        className={`${Roboto.className} antialiased flex flex-col min-h-screen`}
+      >
+        <SoundProvider>
+          <AuthProvider>
             <Navbar />
             <main className="flex-grow">{children}</main>
             {/* <Footer /> */}
-          </SoundProvider>
-        </body>
-      </html>
-    </AuthProvider>
+          </AuthProvider>
+        </SoundProvider>
+      </body>
+    </html>
   );
 }

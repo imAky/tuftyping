@@ -1,5 +1,6 @@
 import React, { KeyboardEventHandler, useRef, useEffect } from "react";
 import { isMobile } from "@/app/utils/helpers";
+import { Spinner2 } from "../component/Spinner";
 
 // Define the isMobile function outside of the component
 

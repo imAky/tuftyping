@@ -3,13 +3,15 @@ import { countErrors, isMobile } from "../utils/helpers";
 import useCountdown from "./useCountdown";
 import useTypings from "./useTypings";
 import useWords from "./useWords";
-import { GameResults } from "../utils/results";
-import { GameResultsTypes } from "../lib/definition";
+import { gameResult } from "../utils/results";
+import { GameResult } from "../lib/definition";
 
 export type State = "start" | "run" | "finish";
 
 const useEngine = (initialCountSeconds: number = 30) => {
   const [state, setState] = useState<State>("start");
+  const [isLoadingResuts, setIsLoadingResults] = useState(false);
+
   const [countdownSeconds, setCountdownSeconds] =
     useState<number>(initialCountSeconds);
 
@@ -27,20 +29,17 @@ const useEngine = (initialCountSeconds: number = 30) => {
   } = useTypings(state !== "finish");
 
   const [totalWordsGenerated, setTotalWordsGenerated] = useState<string>("");
-  const [gameResults, setGameResults] = useState<GameResultsTypes>({
-    wpmResult: {
-      wpm: 0,
-      correctWords: 0,
-    },
+  const [gameResults, setGameResults] = useState<GameResult>({
+    wpm: 0,
     rawWpm: 0,
-    typingMetrics: {
-      accuracy: 0,
-      correctCharacters: 0,
-      incorrectCharacters: 0,
-      errors: 0,
-      totalTyped: 0,
-    },
+    acc: 0,
+    corrWords: 0,
+    corrChar: 0,
+    incorrChar: 0,
+    errMod: 0,
+    tolType: 0,
     timing: 0,
+    point: 0,
   });
   const isFirstRender = useRef(true);
   const isStarting = state === "start" && cursor > 0;
@@ -75,17 +74,23 @@ const useEngine = (initialCountSeconds: number = 30) => {
 
   useEffect(() => {
     if (!timeLeft && state === "run") {
+      setIsLoadingResults(true);
+      setState("finish");
       const calculateResult = async () => {
-        const gameresult = await GameResults(
-          totalCorrChar,
-          totalTypedCharacter,
-          totalWordsGenerated,
-          countdownSeconds
-        );
+        try {
+          const gameresult = await gameResult(
+            totalCorrChar,
+            totalTypedCharacter,
+            totalWordsGenerated,
+            countdownSeconds
+          );
 
-        setGameResults(gameresult);
-
-        setState("finish");
+          setGameResults(gameresult);
+        } catch (error) {
+          console.error("Error calculating results", error);
+        } finally {
+          setIsLoadingResults(false);
+        }
       };
       calculateResult();
     }
@@ -127,6 +132,7 @@ const useEngine = (initialCountSeconds: number = 30) => {
 
     restart,
     timeLeft,
+    isLoadingResuts,
 
     adjustTimer,
     gameResults,

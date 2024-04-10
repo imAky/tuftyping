@@ -9,7 +9,14 @@ import DashCardWrapper from "./DashCardWrapper";
 import Dashskeleton from "./Dashskeleton";
 import LineChartSkeleton from "./LineChartSkeleton";
 
-export default function MainDashBoard() {
+interface MainDashProps {
+  maxWpm: number;
+  totalPoints: number;
+  totalMatches: number;
+  todayPoints: number;
+}
+
+export default function MainDashBoard({ userDetails }: MainDashProps) {
   return (
     <div className="flex flex-col min-h-screen items-center flex-grow bg-[#a0e4ed]">
       <div className=" my-6  items-center w-11/12">
@@ -18,11 +25,10 @@ export default function MainDashBoard() {
             dashboard User
           </span>
         </div>
-        <Suspense fallback={<Dashskeleton />}>
-          <div className="flex justify-between flex-wrap mb-16 ">
-            <DashCardWrapper />
-          </div>
-        </Suspense>
+
+        <div className="flex justify-between flex-wrap mb-16 ">
+          <DashCardWrapper userDetails={userDetails} />
+        </div>
 
         <Suspense fallback={<LineChartSkeleton />}>
           <div className="">

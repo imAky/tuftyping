@@ -1,83 +1,157 @@
 "use server";
 
-import { GameResultsTypes } from "../lib/definition";
+import { model } from "mongoose";
+import { GameResult } from "../lib/definition";
+import { getServerSession } from "next-auth";
+import { options } from "../api/auth/[...nextauth]/options";
+import Score from "../models/Score";
+import User from "../models/User";
+import { userAgent } from "next/server";
+import connectDB from "../lib/connection";
+import { resolve } from "path";
 
-export const GameResults = async (
+export const gameResult = async (
   modifyChar: string,
   actual: string,
   expected: string,
   totalTimeInSeconds: number
-): Promise<GameResultsTypes> => {
+): Promise<GameResult> => {
+  const session = await getServerSession(options);
+
   const expectedWords = expected.trim().split(/\s+/);
   const actualWords = actual.trim().split(/\s+/);
   const typedText = actual.trim();
   const expectedText = expected.trim();
   const modifyText = modifyChar.trim();
 
-  let corrCharMetric = 0;
-  let correctWords = 0;
+  let wpmChar = 0;
+  let corrWords = 0;
 
-  //calculating raw
-  let rawCharacter = 0;
+  let corrChar = 0;
+  let incorrChar = 0;
 
-  // typing Metrics
-  let correctCharacters = 0;
-  let incorrectCharacters = 0;
-  let accuracy = 0;
-
-  // errors
-  let errors = 0;
-  let totalTyped = modifyText.length;
+  let errMod = 0;
+  let tolType = modifyText.length;
 
   for (let i = 0; i < Math.min(modifyText.length, expectedText.length); i++) {
     if (modifyText[i] !== expectedText[i]) {
-      errors++;
+      errMod++;
     }
   }
 
   for (let i = 0; i < Math.min(typedText.length, expectedText.length); i++) {
     if (typedText[i] === expectedText[i]) {
-      correctCharacters++;
+      corrChar++;
     } else {
-      incorrectCharacters++;
+      incorrChar++;
     }
   }
 
   for (let i = 0; i < expectedWords.length && i < actualWords.length; i++) {
-    const expectedWord = expectedWords[i];
-    const actualWord = actualWords[i];
+    const expWord = expectedWords[i];
+    const actWord = actualWords[i];
 
-    if (expectedWord === actualWord) {
-      correctWords++;
+    if (expWord === actWord) {
+      corrWords++;
+      wpmChar += expWord.length;
     }
-    rawCharacter += Math.max(expectedWord.length, actualWord.length);
+  }
 
-    for (let j = 0; j < Math.min(expectedWord.length, actualWord.length); j++) {
-      if (expectedWord[j] === actualWord[j]) {
-        corrCharMetric++;
-      } else {
-        break;
+  const avgWpm = wpmChar / 5;
+  const avgRaw = corrChar / 5;
+
+  const wpm = (avgWpm / totalTimeInSeconds) * 60;
+  const rawWpm = (avgRaw / totalTimeInSeconds) * 60;
+  const acc = (corrChar / typedText.length) * 100;
+
+  let point = 1;
+  if (wpm >= 10) {
+    if (totalTimeInSeconds === 15) {
+      point = 2;
+    } else if (totalTimeInSeconds === 30) {
+      point = 5;
+    } else {
+      let timefac = totalTimeInSeconds / 10;
+      let timemod = timefac % 5;
+      if (timemod !== 0 && acc >= 75) {
+        point = timefac + Math.abs(5 - timemod);
+      } else if (timemod !== 0 && acc < 75) {
+        point = timefac - timemod;
+      } else if (timemod === 0) {
+        point = timefac;
       }
     }
   }
 
-  const avgWords = corrCharMetric / 5;
-  const avgRawWords = rawCharacter / 5;
-
-  const wpm = (avgWords / totalTimeInSeconds) * 60;
-
-  const totalCharMetric = typedText.length;
-  accuracy = (correctCharacters / totalCharMetric) * 100;
-
-  const wpmResult = { wpm: parseFloat(wpm.toFixed(2)), correctWords };
-  const rawWpm = Math.round((avgRawWords / totalTimeInSeconds) * 60);
-  const typingMetrics = {
-    accuracy,
-    correctCharacters,
-    incorrectCharacters,
-    errors,
-    totalTyped,
+  const gamePoint = {
+    wpm: parseFloat(wpm.toFixed(2)),
+    rawWpm: parseFloat(rawWpm.toFixed(2)),
+    acc: parseFloat(acc.toFixed(2)),
+    corrWords,
+    corrChar,
+    incorrChar,
+    errMod,
+    tolType,
+    timing: totalTimeInSeconds,
+    point,
   };
+  if (session && session.user?.email) {
+    const email = session.user.email;
 
-  return { wpmResult, rawWpm, typingMetrics, timing: totalTimeInSeconds };
+    await connectDB();
+
+    try {
+      let user = await User.findOne({ email });
+
+      if (!user) {
+        {
+          user = await User.create({ email, name: session.user.name });
+        }
+      }
+
+      if (user.latestScores.length >= 7) {
+        const oldestScoreId = user.latestScores[0];
+        await Score.findByIdAndDelete(oldestScoreId);
+        user.latestScores.shift();
+      }
+
+      const currentDate = new Date();
+      const lastUpdatedDate = user.updatedAt;
+      if (
+        !lastUpdatedDate ||
+        lastUpdatedDate.getDate() !== currentDate.getDate()
+      ) {
+        user.todayPoints = 0;
+      }
+
+      const score = await Score.create({
+        user: user._id,
+        wpm: gamePoint.wpm,
+        acc: gamePoint.acc,
+        rawWpm: gamePoint.rawWpm,
+        points: gamePoint.point,
+        timeOfTypingTest: totalTimeInSeconds,
+      });
+
+      await User.findByIdAndUpdate(user._id, {
+        $inc: {
+          totalMatches: 1,
+          totalDuration: totalTimeInSeconds,
+          totalPoints: point,
+          todayPoints: point,
+        },
+        $push: {
+          latestScores: {
+            $each: [score._id],
+            $slice: -7,
+          },
+        },
+        $max: { maxWpm: wpm },
+      });
+    } catch (error) {
+      console.log("Error update user and saving score", error);
+    }
+  }
+
+  return gamePoint;
 };

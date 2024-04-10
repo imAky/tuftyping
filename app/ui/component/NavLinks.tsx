@@ -2,21 +2,21 @@
 import { useSound } from "@/app/context/typing/SoundContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { FaCrown, FaKeyboard } from "react-icons/fa";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 import { IoLogoGameControllerB } from "react-icons/io";
-import { Spinner2 } from "./Spinner";
+import { Spinner, Spinner2 } from "./Spinner";
 import Profile from "./Profile";
 import SignInButton from "./SignInButton";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
+import ProfileWrapper from "./ProfileWrapper";
 
 export default function NavLinks() {
   const { isMuted, toggleMenu } = useSound();
   const pathname = usePathname();
   const soundRef = useRef<HTMLButtonElement>(null);
-  const { data: session, status } = useSession();
 
   const hadleSoundClick = () => {
     soundRef.current?.blur();
@@ -74,19 +74,8 @@ export default function NavLinks() {
             <HiSpeakerWave className="sm:h-5 sm:w-5 h-4 w-4 text-slate-200" />
           )}
         </button>
-        <div>
-          {status === "loading" ? (
-            <div className="relative">
-              <Spinner2 />
-            </div>
-          ) : session ? (
-            <div>
-              <Profile user={session.user} pathname={pathname} />
-            </div>
-          ) : (
-            <SignInButton />
-          )}
-        </div>
+
+        <ProfileWrapper pathname={pathname} />
       </div>
     </>
   );

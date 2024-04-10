@@ -1,11 +1,11 @@
-import { GameResultsTypes, ResponseType } from "@/app/lib/definition";
+import { GameResult, ResponseType } from "@/app/lib/definition";
 import { useSession, signIn } from "next-auth/react";
 import { Spinner } from "./Spinner";
 import { saveResult } from "@/app/lib/action";
 import React, { useState } from "react";
 import Tooltip from "./Tooltip";
 
-const ResultButton = ({ gameResults }: { gameResults: GameResultsTypes }) => {
+const ResultButton = ({ gameResults }: { gameResults: GameResult }) => {
   const { data: session, status } = useSession();
   const [isSaving, setIsSaving] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);

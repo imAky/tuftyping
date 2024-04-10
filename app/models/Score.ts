@@ -4,14 +4,11 @@ import { Score } from "../lib/definition";
 const scoreSchema = new Schema<Score>(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    wpm: { type: Number, required: true },
-    accuracy: { type: Number, required: true },
-    correctWords: { type: Number },
-    rawWpm: { type: Number },
-    correctCharacters: { type: Number },
-    incorrectCharacters: { type: Number },
-    errorsCount: { type: Number },
-    totalTyped: { type: Number },
+    wpm: { type: Number, default: 0 },
+    acc: { type: Number, default: 0 },
+    rawWpm: { type: Number, default: 0 },
+    points: { type: Number, default: 0 },
+    timeOfTypingTest: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

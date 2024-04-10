@@ -3,20 +3,22 @@ import { Document, Schema } from "mongoose";
 export interface User extends Document {
   name: string;
   email: string;
-  coins: number;
-  totalTimeSpent: number;
+  maxWpm: number;
+  totalPoints: number;
+  totalMatches: number;
+  totalDuration: number;
+  lastPointsUpdate: Date;
+  todayPoints: number;
+  latestScores: Schema.Types.ObjectId[];
 }
 
 export interface Score extends Document {
   user: Schema.Types.ObjectId;
   wpm: number;
-  correctWords?: number;
-  rawWpm?: number;
-  accuracy: number;
-  correctCharacters?: number;
-  incorrectCharacters?: number;
-  errorsCount?: number;
-  totalTyped?: number;
+  acc: number;
+  rawWpm: number;
+  points: number;
+  timeOfTypingTest: number;
 }
 
 export interface LeaderboardEntry extends Document {
@@ -24,20 +26,17 @@ export interface LeaderboardEntry extends Document {
   score: Schema.Types.ObjectId;
 }
 
-export type GameResultsTypes = {
-  wpmResult: {
-    wpm: number;
-    correctWords: number;
-  };
+export type GameResult = {
+  wpm: number;
   rawWpm: number;
-  typingMetrics: {
-    accuracy: number;
-    correctCharacters: number;
-    incorrectCharacters: number;
-    errors: number;
-    totalTyped: number;
-  };
+  acc: number;
+  corrWords: number;
+  corrChar: number;
+  incorrChar: number;
+  errMod: number;
+  tolType: number;
   timing: number;
+  point: number;
 };
 
 export type ResponseType = {

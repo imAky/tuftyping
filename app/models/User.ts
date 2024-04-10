@@ -5,8 +5,12 @@ const userSchema = new Schema<User>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    coins: { type: Number, default: 0 },
-    totalTimeSpent: { type: Number, default: 0 },
+    maxWpm: { type: Number, default: 0 },
+    totalPoints: { type: Number, default: 0 },
+    totalMatches: { type: Number, default: 0 },
+    totalDuration: { type: Number, default: 0 },
+    todayPoints: { type: Number, default: 0 },
+    latestScores: [{ type: Schema.Types.ObjectId, ref: "Score" }],
   },
   { timestamps: true }
 );

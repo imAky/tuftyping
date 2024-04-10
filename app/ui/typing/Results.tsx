@@ -2,7 +2,7 @@ import useEngine, { State } from "@/app/hooks/useEngine";
 import ResultCard from "../component/ResultCard";
 import { ResultButton } from "@/app/ui/component/ResultButton";
 import { formattedScore } from "@/app/utils/helpers";
-import { GameResultsTypes } from "@/app/lib/definition";
+import { GameResult } from "@/app/lib/definition";
 
 import {
   FaBackward,
@@ -23,7 +23,7 @@ const Results = ({
   onRestart,
 }: {
   state: State;
-  gameResults: GameResultsTypes;
+  gameResults: GameResult;
   className?: string;
   onRestart?: () => void;
 }) => {
@@ -39,71 +39,53 @@ const Results = ({
         <ResultCard
           title="wpm"
           icon={<FaBolt />}
-          score={gameResults.wpmResult.wpm}
-          text={`${gameResults.wpmResult.wpm} wpm`}
+          score={gameResults.wpm}
+          text={`${gameResults.wpm} wpm`}
         />
         <ResultCard
           title="acc"
           icon={<FaPercent />}
-          score={gameResults.typingMetrics.accuracy}
-          text={`${parseFloat(
-            gameResults.typingMetrics.accuracy.toFixed(2)
-          )}% (${gameResults.typingMetrics.correctCharacters} correct / ${
-            gameResults.typingMetrics.incorrectCharacters
-          } incorrect)`}
+          score={gameResults.acc}
+          text={`${parseFloat(gameResults.acc.toFixed(2))}% (${
+            gameResults.corrChar
+          } correct / ${gameResults.incorrChar} incorrect)`}
         />
         <ResultCard
-          title="net"
+          title="points"
           icon={<LuTarget />}
-          score={formattedScore(
-            (gameResults.wpmResult.wpm * gameResults.typingMetrics.accuracy) /
-              100
-          )}
-          text={`${parseFloat(
-            (
-              (gameResults.wpmResult.wpm * gameResults.typingMetrics.accuracy) /
-              100
-            ).toFixed(2)
-          )} wpm (wpm * acc )`}
+          score={gameResults.point}
+          text={`Total Points : ${gameResults.point}`}
         />
         <ResultCard
           title="raw"
           icon={<FaLightbulb />}
           score={gameResults.rawWpm}
-          text={`raw wpm`}
+          text={`${gameResults.rawWpm} raw`}
         />
         <ResultCard
           title="words"
           icon={<LuWholeWord />}
-          score={gameResults.wpmResult.correctWords}
+          score={gameResults.corrWords}
           text={`correct words`}
         />
         <ResultCard
           title="characters"
           icon={<LuWholeWord />}
-          score={
-            gameResults.typingMetrics.totalTyped -
-            gameResults.typingMetrics.errors
-          }
+          score={gameResults.tolType - gameResults.errMod}
           text={`correct, incorrect`}
-          secondary={gameResults.typingMetrics.errors}
+          secondary={gameResults.errMod}
         />
         <ResultCard
           title="key"
           icon={<FaKeyboard />}
-          score={
-            gameResults.typingMetrics.correctCharacters +
-            gameResults.typingMetrics.incorrectCharacters
-          }
+          score={gameResults.corrChar + gameResults.incorrChar}
           text={`keystrokes`}
         />
         <ResultCard
           title="backspace"
           icon={<FaBackward />}
           score={Math.max(
-            gameResults.typingMetrics.correctCharacters +
-              gameResults.typingMetrics.incorrectCharacters -
-              gameResults.typingMetrics.totalTyped,
+            gameResults.corrChar + gameResults.incorrChar - gameResults.tolType,
             0
           )}
           text={`backspace`}

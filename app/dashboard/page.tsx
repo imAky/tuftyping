@@ -1,12 +1,17 @@
+import { getServerSession } from "next-auth";
 import MainDashBoard from "../ui/dashboard/MainDashboard";
 import SideNav from "../ui/dashboard/sidenav";
+import { options } from "../api/auth/[...nextauth]/options";
+import { fetchUserDetail } from "../lib/action";
 
 export default async function DashBoard() {
-  // await new Promise((resolve) => setTimeout(resolve, 5000));
+  const session = await getServerSession(options);
+  const userDetails = await fetchUserDetail();
+
   return (
     <div className="flex  min-h-screen">
-      <SideNav />
-      <MainDashBoard />
+      <SideNav user={session?.user} />
+      <MainDashBoard userDetails={userDetails} />
     </div>
   );
 }

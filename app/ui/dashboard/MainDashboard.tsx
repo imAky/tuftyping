@@ -10,10 +10,12 @@ import Dashskeleton from "./Dashskeleton";
 import LineChartSkeleton from "./LineChartSkeleton";
 
 interface MainDashProps {
-  maxWpm: number;
-  totalPoints: number;
-  totalMatches: number;
-  todayPoints: number;
+  userDetails: {
+    maxWpm: number;
+    totalPoints: number;
+    totalMatches: number;
+    todayPoints: number;
+  };
 }
 
 export default function MainDashBoard({ userDetails }: MainDashProps) {

@@ -5,10 +5,12 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 
 interface DashCardProps {
-  maxWpm: number;
-  totalPoints: number;
-  totalMatches: number;
-  todayPoints: number;
+  userDetails: {
+    maxWpm: number;
+    totalPoints: number;
+    totalMatches: number;
+    todayPoints: number;
+  };
 }
 
 export default async function DashCardWrapper({ userDetails }: DashCardProps) {

@@ -116,12 +116,17 @@ export const gameResult = async (
       }
 
       const currentDate = new Date();
+
       const lastUpdatedDate = user.updatedAt;
+
       if (
         !lastUpdatedDate ||
-        lastUpdatedDate.getDate() !== currentDate.getDate()
+        lastUpdatedDate.getDate() !== currentDate.getDate() ||
+        lastUpdatedDate.getMonth() !== currentDate.getMonth() ||
+        lastUpdatedDate.getFullYear() !== currentDate.getFullYear()
       ) {
         user.todayPoints = 0;
+        await user.save();
       }
 
       const score = await Score.create({

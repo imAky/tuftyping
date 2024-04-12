@@ -11,7 +11,7 @@ export default async function DashBoard() {
   return (
     <div className="flex  min-h-screen">
       <SideNav user={session?.user} />
-      <MainDashBoard userDetails={userDetails} />
+      {userDetails && <MainDashBoard userDetails={userDetails} />}
     </div>
   );
 }

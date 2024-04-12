@@ -3,11 +3,13 @@ import { Document, Schema } from "mongoose";
 export interface User extends Document {
   name: string;
   email: string;
+  username: string;
+  image?: string;
   maxWpm: number;
   totalPoints: number;
   totalMatches: number;
   totalDuration: number;
-  lastPointsUpdate: Date;
+
   todayPoints: number;
   latestScores: Schema.Types.ObjectId[];
 }
@@ -43,3 +45,12 @@ export type ResponseType = {
   status: boolean;
   message: string;
 };
+
+export interface ScoreObject {
+  date: Date;
+  wpm: number;
+  acc: number;
+  rawWpm: number;
+  points: number;
+  timeOfTypingTest: number;
+}

@@ -1,6 +1,4 @@
-// Use client-side rendering if applicable (for Next.js)
 "use client";
-
 import { useEffect, useRef } from "react";
 import { Chart } from "chart.js";
 
@@ -15,7 +13,7 @@ import {
   Tooltip,
 } from "chart.js";
 
-const LineChart = ({ labels, data }) => {
+const LineChart = ({ labels, datasets }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -36,31 +34,35 @@ const LineChart = ({ labels, data }) => {
       type: "line",
       data: {
         labels,
-        datasets: [
-          {
-            label: "Wpm",
-            data,
-            backgroundColor: "rgba(54, 162, 235, 0.2)",
-            borderColor: "rgba(54, 162, 235, 1)",
-
-            pointStyle: "circle",
-            pointRadius: 10,
-            pointHoverRadius: 15,
-          },
-        ],
+        datasets: datasets.map((dataset) => ({
+          label: dataset.label,
+          data: dataset.data,
+          backgroundColor: dataset.color,
+          borderColor: dataset.color,
+          pointStyle: "circle",
+          pointRadius: 5,
+          pointHoverRadius: 8,
+        })),
       },
       options: {
         responsive: true,
-
         plugins: {
           tooltip: {
-            // Customize tooltip content and appearance (optional)
             callbacks: {
               label: (context) => {
-                // Function to format tooltip content
                 const datasetLabel = context.dataset.label;
                 const dataPoint = context.parsed.y;
-                return `${datasetLabel}: ${dataPoint}`; // Display dataset label and data point
+                const date = labels[context.dataIndex];
+                const timeOfTypingTest =
+                  datasets[context.datasetIndex].timeOfTypingTest[
+                    context.dataIndex
+                  ];
+                const tooltipText = [
+                  `${datasetLabel}: ${dataPoint}`,
+                  `Duration: ${timeOfTypingTest}`,
+                ];
+
+                return tooltipText;
               },
             },
           },

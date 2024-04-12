@@ -1,25 +1,44 @@
+import { fetchUserScore } from "@/app/lib/action";
 import LineChart from "./LineChart";
 
 export default async function ChartWrapper() {
-  //await new Promise((resolve) => setTimeout(resolve, 7000));
-  const labels = [
-    "23/02/24",
-    "24/02/24",
-    "25/02/24",
-    "26/02/24",
-    "27/02/24",
-    "28/02/24",
-    "29/02/24",
-    "31/02/24",
-  ];
-  const data = [30, 25, 100, 150, 22, 50, 17.3, 20.5]; // Your data
+  const userScore = await fetchUserScore();
+
+  const labels = userScore?.map((score) =>
+    new Date(score.date).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+    })
+  );
+  const wpmData = userScore?.map((score) => score.wpm);
+  const rawWpmData = userScore?.map((score) => score.rawWpm);
+  const pointsData = userScore?.map((score) => score.points);
+  const timeOfTypingTest = userScore?.map((score) => score.timeOfTypingTest);
   return (
     <>
       <div className="mb-16 block">
         <div className="flex items-center justify-center">
           <span className="">Last 7 Wpm</span>
         </div>
-        <LineChart labels={labels} data={data} />
+        <LineChart
+          labels={labels}
+          datasets={[
+            { label: "Wpm", data: wpmData, color: "#36a2eb", timeOfTypingTest },
+            {
+              label: "Raw Wpm",
+              data: rawWpmData,
+              color: "#ff6384",
+              timeOfTypingTest,
+            },
+            {
+              label: "Points",
+              data: pointsData,
+              color: "#ffce56",
+              timeOfTypingTest,
+            },
+          ]}
+        />
       </div>
     </>
   );

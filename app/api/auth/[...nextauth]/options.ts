@@ -1,8 +1,9 @@
 import { NextAuthOptions } from "next-auth";
-import NextAuth from "next-auth/next";
+
 import GoogleProvider from "next-auth/providers/google";
 import ConnectDB from "@/app/lib/connection";
 import User from "@/app/models/User";
+import connectDB from "@/app/lib/connection";
 
 export const options: NextAuthOptions = {
   session: {
@@ -30,18 +31,48 @@ export const options: NextAuthOptions = {
         const existingUser = await User.findOne({ email: user.email });
 
         if (existingUser) {
-          const { name: existIngName, email: existingEmail } = existingUser;
-          const { name: newName, email: newEmail } = user;
-          if (existIngName !== newName || existingEmail !== newEmail) {
+          const {
+            name: existIngName,
+            email: existingEmail,
+            image: existingImage,
+          } = existingUser;
+          const { name: newName, email: newEmail, image: newImage } = user;
+          if (
+            existIngName !== newName ||
+            existingEmail !== newEmail ||
+            existingImage !== newImage
+          ) {
             await User.updateOne(
               { email: user.email },
-              { $set: { name: newName, email: newEmail } }
+              { $set: { name: newName, email: newEmail, image: newImage } }
             );
           }
         } else {
+          // Generate username based on the user's first name
+          let firstName = "";
+          if (user.name) {
+            if (user.name.includes(" ")) {
+              firstName = user.name.split(" ")[0].toLowerCase();
+            } else {
+              firstName = user.name.toLowerCase();
+            }
+          } else {
+            firstName = "anonymous"; // Default value when user.name is undefined
+          }
+
+          let username = firstName;
+          let count = firstName.length;
+
+          while (await User.findOne({ username })) {
+            username = firstName + count;
+            count = count + firstName.length;
+          }
+
           await User.create({
             name: user.name,
             email: user.email,
+            image: user.image,
+            username,
           });
         }
         return true;
@@ -53,6 +84,7 @@ export const options: NextAuthOptions = {
 
     async session({ session, user, token }) {
       // Return the session object as is
+
       return session;
     },
     async jwt({ token, account, profile }) {

@@ -1,4 +1,4 @@
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, Session } from "next-auth";
 
 import GoogleProvider from "next-auth/providers/google";
 import ConnectDB from "@/app/lib/connection";
@@ -25,7 +25,7 @@ export const options: NextAuthOptions = {
   ],
   secret: process.env.AUTH_SECRET,
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user }) {
       await ConnectDB();
       try {
         const existingUser = await User.findOne({ email: user.email });
@@ -82,12 +82,17 @@ export const options: NextAuthOptions = {
       }
     },
 
-    async session({ session, user, token }) {
+    async session({ session }: { session: any }) {
       // Return the session object as is
+      if (session.user) {
+        const sessionUser = await User.findOne({ email: session.user.email });
+        session.user.id = sessionUser._id;
+        session.user.username = sessionUser.username;
+      }
 
       return session;
     },
-    async jwt({ token, account, profile }) {
+    async jwt({ token, account }) {
       // Persist the OAuth access_token and or the user id to the token right after signin
       if (account) {
         token.accessToken = account.access_token;

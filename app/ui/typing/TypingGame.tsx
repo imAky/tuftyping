@@ -6,7 +6,7 @@ import WordsContainer from "./WordsContainer";
 import UserTypings from "./UserTypings";
 import RestartButton from "./RestartButton";
 import Results from "./Results";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Spinner2 } from "../component/Spinner";
 import dynamic from "next/dynamic";
 
@@ -66,10 +66,12 @@ const TypingGame = () => {
               ))}
           </div>
           {state !== "finish" && (
-            <RestartButton
-              className="mx-auto mt-10 text-slate-500"
-              onRestart={restart}
-            />
+            <Suspense>
+              <RestartButton
+                className="mx-auto mt-10 text-slate-500"
+                onRestart={restart}
+              />
+            </Suspense>
           )}
         </div>
       ) : (

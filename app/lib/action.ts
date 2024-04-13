@@ -6,6 +6,7 @@ import connectDB from "./connection";
 import { options } from "../api/auth/[...nextauth]/options";
 import { unstable_noStore as noStore } from "next/cache";
 import { cookies } from "next/headers";
+import { resolve } from "path";
 
 interface ScoreObject {
   date: Date;
@@ -69,13 +70,15 @@ export async function fetchUserScore() {
 
 export async function fetchLeaderBoard(
   pageNumber: number = 1,
-  pageSize: number = 4
+  pageSize: number = 18
 ) {
   try {
     await connectDB();
+    console.log("backend connected");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const leaderboard = await User.find()
       .select("-_id name username image totalPoints maxWpm")
-      .sort({ maxWpm: -1 })
+      .sort({ maxWpm: -1, totalPoints: -1, createdAt: 1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       .lean();

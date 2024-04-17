@@ -1,30 +1,12 @@
 import { time } from "console";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { formatTime } from "@/app/utils/helpers";
 
 interface TimerProps {
   timeLeft: number;
   adjustTimer: (increment: number) => void;
   state: string;
 }
-const formatTime = (timeLeft: number): string => {
-  if (timeLeft >= 3600) {
-    const hours = Math.floor(timeLeft / 3600);
-    const minutes = Math.floor((timeLeft % 3600) / 60);
-    const seconds = timeLeft % 60;
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    const formattedSeconds = seconds.toString().padStart(2, "0");
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-  } else if (timeLeft >= 60) {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-    const formattedSeconds = seconds.toString().padStart(2, "0");
-    return `${formattedMinutes}:${formattedSeconds}`;
-  } else {
-    return timeLeft.toString();
-  }
-};
 
 const CountdownTimer = ({ timeLeft, adjustTimer, state }: TimerProps) => {
   const formattedTime = formatTime(timeLeft);

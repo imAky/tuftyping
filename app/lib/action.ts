@@ -6,7 +6,6 @@ import connectDB from "./connection";
 import { options } from "../api/auth/[...nextauth]/options";
 import { unstable_noStore as noStore } from "next/cache";
 import { cookies } from "next/headers";
-import { resolve } from "path";
 
 interface ScoreObject {
   date: Date;
@@ -26,16 +25,23 @@ export async function fetchUserDetail() {
     const email = session.user.email;
     await connectDB();
     const user = await User.findOne({ email }).select(
-      "maxWpm totalPoints totalMatches todayPoints"
+      "maxWpm totalPoints totalMatches todayPoints totalDuration createdAt"
     );
     if (!user) {
       throw new Error("User not found in the database");
     }
+    const registrationDate = new Date(user.createdAt);
+    const day = registrationDate.getDate();
+    const month = registrationDate.toLocaleString("en-us", { month: "short" });
+    const year = registrationDate.getFullYear();
+    const formattedRegistrationDate = `${day} ${month} ${year}`;
     return {
       maxWpm: parseFloat(user.maxWpm.toFixed(2)),
       totalPoints: parseFloat(user.totalPoints),
       totalMatches: parseFloat(user.totalMatches),
       todayPoints: parseFloat(user.todayPoints),
+      totalDuration: parseFloat(user.totalDuration),
+      registrationDate: formattedRegistrationDate,
     };
   } catch (error: any) {
     console.error("Error fetching user details:", error);
@@ -74,8 +80,6 @@ export async function fetchLeaderBoard(
 ) {
   try {
     await connectDB();
-    console.log("backend connected");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     const leaderboard = await User.find()
       .select("-_id name username image totalPoints maxWpm")
       .sort({ maxWpm: -1, totalPoints: -1, createdAt: 1 })
@@ -86,5 +90,55 @@ export async function fetchLeaderBoard(
     return leaderboard;
   } catch (error) {
     console.error("Error fetching user details:", error);
+  }
+}
+
+export async function fetchUsertotalPoints() {
+  const session = await getServerSession(options);
+  try {
+    if (!session?.user) {
+      throw new Error("User not found");
+    }
+    const email = session.user.email;
+    await connectDB();
+    const totalPoints = await User.findOne({ email }).select(
+      "-_id totalPoints"
+    );
+    console.log("usertotalPoints", totalPoints);
+
+    return totalPoints;
+  } catch (error: any) {
+    console.error("Error fetching user Points:", error);
+  }
+}
+
+export async function RedeemUserPoints(prize: string) {
+  const session = await getServerSession(options);
+  try {
+    if (!session?.user) {
+      throw new Error("User not found");
+    }
+    const email = session.user.email;
+    await connectDB();
+    const requiredPointsMap: { [key: string]: number } = {
+      "50": 10000,
+      "100": 20000,
+      "200": 30000,
+      "500": 50000,
+    };
+    const requiredPoints = requiredPointsMap[prize];
+
+    const user = await User.findOneAndUpdate(
+      { email, totalPoints: { $gte: requiredPoints } },
+      { $inc: { totalPoints: -requiredPoints } },
+      { new: true }
+    );
+    if (!user) {
+      throw new Error("Insufficient points to redeem");
+    }
+
+    return { message: "Redeem complete, check you mail" };
+  } catch (error: any) {
+    return { message: error.message };
   }
 }

@@ -6,6 +6,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { FaCrown, FaKeyboard } from "react-icons/fa";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 import { IoLogoGameControllerB } from "react-icons/io";
+import { FaInfo } from "react-icons/fa";
 import { Spinner, Spinner2 } from "./Spinner";
 import Profile from "./Profile";
 import SignInButton from "./SignInButton";
@@ -47,15 +48,7 @@ export default function NavLinks() {
         >
           <FaKeyboard className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
         </Link>
-        <Link
-          href="/contest"
-          className={`${
-            pathname.startsWith("/contest") &&
-            "border-b-2 sm:border-b-4 border-yellow-400"
-          } p-1`}
-        >
-          <IoLogoGameControllerB className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
-        </Link>
+
         <Link
           href="/leaderboard"
           className={`${
@@ -64,6 +57,15 @@ export default function NavLinks() {
           } p-1`}
         >
           <FaCrown className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
+        </Link>
+        <Link
+          href="/about"
+          className={`${
+            pathname.startsWith("/about") &&
+            "border-b-2 sm:border-b-4 border-yellow-400"
+          } p-1`}
+        >
+          <FaInfo className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
         </Link>
       </div>
       <div className="flex items-center sm:space-x-8 space-x-4">

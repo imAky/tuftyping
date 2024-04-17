@@ -26,7 +26,7 @@ export default function RootLayout({
           <AuthProvider>
             <Navbar />
             <main className="flex-grow">{children}</main>
-            {/* <Footer /> */}
+            <Footer />
           </AuthProvider>
         </SoundProvider>
       </body>

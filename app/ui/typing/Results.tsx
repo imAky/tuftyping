@@ -99,7 +99,7 @@ const Results = ({
       </div>
       <div className="mb-3 flex justify-center">
         <ResultButton title="Restart" handleRestart={onRestart}></ResultButton>
-        <SaveButton gameResults={gameResults} />
+        {/* <SaveButton gameResults={gameResults} /> */}
       </div>
     </div>
   );

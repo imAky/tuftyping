@@ -34,29 +34,22 @@ export const isMobile = () => {
   return false; // Default to false if window or navigator is not available
 };
 
-// export const countWpm = (actual: string, expected: string): number => {
-//   // Remove any leading or trailing white spaces and split the strings into arrays of words
-//   const actualWords = actual.trim().split(/\s+/);
-//   const expectedWords = expected.trim().split(/\s+/);
-
-//   // Calculate the number of correctly typed characters
-//   const actualChars = actual.replace(/\s/g, "").length;
-//   const expectedChars = expected.replace(/\s/g, "").length;
-
-//   // Calculate the WPM
-//   const wpm = (actualChars / 5 / (expectedChars / 5)) * 60;
-
-//   // Return the calculated WPM
-//   return wpm;
-// };
-
-// export const calculateAccuracyPercentage = (errors: number, total: number) => {
-//   if (total > 0) {
-//     const corrects = total - errors;
-//     return (corrects / total) * 100;
-//   }
-// };
-
-// export const formatPercentage = (percentage: number) => {
-//   return percentage.toFixed(0) + "%";
-// };
+export const formatTime = (timeLeft: number): string => {
+  if (timeLeft >= 3600) {
+    const hours = Math.floor(timeLeft / 3600);
+    const minutes = Math.floor((timeLeft % 3600) / 60);
+    const seconds = timeLeft % 60;
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = seconds.toString().padStart(2, "0");
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  } else if (timeLeft >= 60) {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = seconds.toString().padStart(2, "0");
+    return `${formattedMinutes}:${formattedSeconds}`;
+  } else {
+    return timeLeft.toString();
+  }
+};

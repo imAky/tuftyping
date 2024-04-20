@@ -16,7 +16,7 @@ export default async function DashBoard() {
     <div>
       {" "}
       <Suspense fallback={<LineChartSkeleton />}>
-        <div className="bg-gray-800 p-4 drop-shadow-2xl rounded-md my-4">
+        <div className="bg-gradient-to-r from-blue-200 to-cyan-200 p-4 my-8 drop-shadow-2xl rounded-md ">
           <ChartWrapper />
         </div>
       </Suspense>

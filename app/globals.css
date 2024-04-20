@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-primary-1 text-secondary-1 min-h-screen flex-col;
+    @apply bg-gradient-to-r from-slate-900 to-gray-800  text-secondary-1 min-h-screen flex-col;
   }
 }
 
@@ -27,6 +27,11 @@
 /* Define the scrollbar handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background-color: #8e7c75; /* Darker gray color on hover */
+}
+
+.privacy-policy ::selection {
+  background-color: yellow;
+  color: black;
 }
 
 @keyframes custom-blink {

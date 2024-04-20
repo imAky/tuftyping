@@ -5,15 +5,15 @@ import { options } from "../api/auth/[...nextauth]/options";
 export default function LeaderBoard() {
   return (
     <div className="flex min-h-screen flex-grow justify-between overflow-y-hidden">
-      <div className="hidden md:flex flex-col   items-center   xl:w-[200px]  lg:w-1/5 md:w-1/4  bg-gray-700 mr-4">
-        <div className="">Advertisement 1</div>
+      <div className="hidden md:flex flex-col   items-center   xl:w-[200px]  lg:w-1/5 md:w-1/4 ">
+        <div className=""></div>
       </div>
-      <div className=" max-w-4xl flex-grow bg-gray-700   h-[800px] overflow-y-auto">
+      <div className="max-w-4xl flex-grow    h-[800px] overflow-y-auto mx-4">
         <LeaderBox />
       </div>
 
-      <div className="hidden md:flex flex-col justify-between items-center   xl:w-[200px]  lg:w-1/5 md:w-1/4 bg-gray-700  ml-4">
-        <div className="">Advertisement 2</div>
+      <div className="hidden md:flex flex-col  items-center   xl:w-[200px]  lg:w-1/5 md:w-1/4 ">
+        <div className=""></div>
       </div>
     </div>
   );

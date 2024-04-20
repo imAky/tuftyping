@@ -5,15 +5,18 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 
 interface DashCardProps {
-  userDetails: {
-    maxWpm: number;
-    totalPoints: number;
-    totalMatches: number;
-    todayPoints: number;
-  };
+  totalPoints: number;
+  todayPoints: number;
+  maxWpm: number;
+  totalMatches: number;
 }
 
-export default async function DashCardWrapper({ userDetails }: DashCardProps) {
+export default async function DashCardWrapper({
+  totalPoints,
+  todayPoints,
+  maxWpm,
+  totalMatches,
+}: DashCardProps) {
   //await new Promise((resolve) => setTimeout(resolve, 3000));
 
   return (
@@ -21,22 +24,22 @@ export default async function DashCardWrapper({ userDetails }: DashCardProps) {
       <DashCard
         title="Points"
         icon={<BiSolidCoinStack className="h-4 w-4" />}
-        score={userDetails.totalPoints}
+        score={totalPoints}
       />
       <DashCard
         title="Today Points"
         icon={<FaBolt className="h-4 w-4" />}
-        score={userDetails.todayPoints}
+        score={todayPoints}
       />
       <DashCard
         title="Max Wpm"
         icon={<FaPercent className="h-4 w-4" />}
-        score={userDetails.maxWpm}
+        score={maxWpm}
       />
       <DashCard
         title="Matches"
         icon={<FaLightbulb className="h-4 w-4" />}
-        score={userDetails.totalMatches}
+        score={totalMatches}
       />
     </>
   );

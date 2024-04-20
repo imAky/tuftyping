@@ -90,7 +90,7 @@ const WordsContainer = ({
 
   return (
     <div
-      className="relative bg-secondary-2 text-stone-400 p-8 w-11/12 rounded-lg shadow-md border-gray-300 outline-none focus:ring-0"
+      className="relative w-full  bg-gray-800 text-slate-500 drop-shadow-2xl p-6  rounded-lg shadow-2xl border-gray-300 outline-none focus:ring-0 mx-2"
       tabIndex={0}
       onClick={handleContainerClick} // Always attach handleContainerClick
     >
@@ -102,7 +102,7 @@ const WordsContainer = ({
         onInput={isMobile() ? handleInput : undefined}
         onBlur={handleBlur} // Handle blur event
       />
-      <div className="relative text-2xl tracking-wider max-w-5xl leading-relaxed break-all">
+      <div className="relative text-2xl tracking-wider max-w-5xl leading-loose break-all">
         {children}
       </div>
     </div>

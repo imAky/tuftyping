@@ -17,7 +17,7 @@ const useEngine = (initialCountSeconds: number = 30) => {
 
   const { timeLeft, startCountdown, resetCountdown } =
     useCountdown(countdownSeconds);
-  const { words, updateWords } = useWords(isMobile() ? 5 : 20);
+  const { words, updateWords } = useWords(isMobile() ? 5 : 30);
   const {
     cursor,
     typed,
@@ -84,6 +84,10 @@ const useEngine = (initialCountSeconds: number = 30) => {
             totalWordsGenerated,
             countdownSeconds
           );
+          console.log("totalChar", totalCorrChar);
+          console.log("totalTypedChar", totalTypedCharacter);
+          console.log("totalWordsGenerated", totalWordsGenerated);
+          console.log("countdownSeconds", countdownSeconds);
 
           setGameResults(gameresult);
         } catch (error) {
@@ -102,8 +106,6 @@ const useEngine = (initialCountSeconds: number = 30) => {
 
   useEffect(() => {
     if (areWordsFinished) {
-      console.log(`typed ${typed}`);
-      // sumErrors();
       updateWords();
       clearTyped();
     }

@@ -33,9 +33,9 @@ export default async function Page({ params }: { params: { prize: string } }) {
         <ReImage width={250} height={190} />
       </div>
       <div className="flex flex-col gap-4 w-3/4 mx-2">
-        <div className="flex items-center text-black ">
+        <div className="flex items-center text-black text-xl font-medium  tracking-wider">
           <FaRupeeSign className="h-4 w-4" />
-          <span>{prize} Paypal</span>
+          <span className=" text-2xl">{prize} PayPal</span>
         </div>
 
         <div className="flex flex-col gap-4">
@@ -50,16 +50,16 @@ export default async function Page({ params }: { params: { prize: string } }) {
           <RedeemButton isRedeem={isRedeem} prize={prize} />
         </div>
 
-        <div className=" text-gray-500 my-4">
+        <div className=" text-gray-500 my-4 text-lg font-medium tracking-wide">
           <p className="my-2 text-gray-700 tracking-wider ">
             For the quickest delivery of your payment, we recommend that your
             PayPal account email matches to the email registered for your
             account and your PayPal account needs to be verified.
           </p>
-          <p className="my-8 text-gray-700 tracking-wider">
+          <p className="my-8 text-gray-600 tracking-wider">
             If You don't have Paypal accoount then click here and create One.
           </p>
-          <p className="my-4 text-gray-700 tracking-wide">
+          <p className="my-4 text-gray-500 tracking-wide">
             *While every attempt is made to process your redemption as soon as
             possible, rewards may take up to 10 business days to receive,
             although they usually arrive much sooner.

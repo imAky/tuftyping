@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa";
 import { LuTarget, LuWholeWord } from "react-icons/lu";
 import { randomBytes } from "crypto";
-import SaveButton from "../component/SaveButton";
+// import SaveButton from "../component/SaveButton";
 
 const Results = ({
   state,
@@ -99,7 +99,6 @@ const Results = ({
       </div>
       <div className="mb-3 flex justify-center">
         <ResultButton title="Restart" handleRestart={onRestart}></ResultButton>
-        {/* <SaveButton gameResults={gameResults} /> */}
       </div>
     </div>
   );

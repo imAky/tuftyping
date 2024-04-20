@@ -78,7 +78,7 @@ const LineChart = ({ labels, datasets }) => {
           },
           y: {
             grid: {
-              color: "rgba(255,255,255,0.5)", // Change the color of the y-axis grid lines
+              color: "rgba(255,255,255,0.1)", // Change the color of the y-axis grid lines
             },
             ticks: {
               color: "black", // Change the color of the y-axis labels

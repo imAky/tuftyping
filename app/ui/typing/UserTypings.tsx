@@ -65,8 +65,8 @@ const Character = ({
 
   return (
     <span
-      className={`${isCorrect && !isWhiteSpace && "text-yellow-300"} ${
-        !isCorrect && !isWhiteSpace && "text-red-400 "
+      className={`${isCorrect && !isWhiteSpace && "text-slate-300"} ${
+        !isCorrect && !isWhiteSpace && "text-red-500 "
       } ${!isCorrect && isWhiteSpace && "bg-red-500/50"}`}
     >
       {expected}

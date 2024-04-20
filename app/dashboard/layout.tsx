@@ -21,7 +21,7 @@ export default async function DashBoardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(options);
+  const session: any = await getServerSession(options);
   let userDetails;
   if (session) {
     userDetails = await fetchUserDetail();
@@ -29,16 +29,26 @@ export default async function DashBoardLayout({
 
   console.log(userDetails?.totalMatches, userDetails?.totalDuration);
   return (
-    <div className="flex flex-col bg-slate-400 drop-shadow-2xl shadow-2xl  min-h-screen md:mx-48 ">
+    <div className="flex flex-col  min-h-screen md:mx-48 mx-4">
       <DashNav
-        session={session}
+        image={session?.user?.image}
+        name={session?.user?.name}
+        username={session?.user?.username}
+        email={session?.user?.email}
         totalMatches={userDetails?.totalMatches}
         totalDuration={userDetails?.totalDuration}
         registrationDate={userDetails?.registrationDate}
       />
       {/* flex justify-center gap-4  flex-wrap mb-16  */}
-      <div className="flex justify-evenly flex-wrap my-16 gap-8 bg-gray-800 p-8 drop-shadow-2xl rounded-md">
-        {userDetails && <DashCardWrapper userDetails={userDetails} />}
+      <div className="flex justify-evenly flex-wrap my-16 gap-8 bg-gradient-to-r from-indigo-800 to-blue-900 p-8 drop-shadow-2xl rounded-md">
+        {userDetails && (
+          <DashCardWrapper
+            totalPoints={userDetails.totalPoints}
+            todayPoints={userDetails.todayPoints}
+            maxWpm={userDetails.maxWpm}
+            totalMatches={userDetails.totalMatches}
+          />
+        )}
       </div>
       <DashLink />
 

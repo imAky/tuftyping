@@ -17,12 +17,19 @@ export const gameResult = async (
   totalTimeInSeconds: number
 ): Promise<GameResult> => {
   const session = await getServerSession(options);
+  console.log("calling game result backend");
 
   const expectedWords = expected.trim().split(/\s+/);
   const actualWords = actual.trim().split(/\s+/);
   const typedText = actual.trim();
   const expectedText = expected.trim();
   const modifyText = modifyChar.trim();
+
+  console.log("expectedWords", expectedWords);
+  console.log("actualWords", actualWords);
+  console.log("typedText", typedText);
+  console.log("expectedText", expectedText);
+  console.log("modifyText", modifyText);
 
   let wpmChar = 0;
   let corrWords = 0;
@@ -46,6 +53,7 @@ export const gameResult = async (
       incorrChar++;
     }
   }
+  console.log("corr", corrChar, "inc", incorrChar);
 
   for (let i = 0; i < expectedWords.length && i < actualWords.length; i++) {
     const expWord = expectedWords[i];

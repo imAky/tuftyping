@@ -2,8 +2,9 @@
 import { fetchLeaderBoard } from "@/app/lib/action";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-
+import { FaUserCircle } from "react-icons/fa";
 export default function LeaderBox() {
   const [leaderboard, setLeaderboard] = useState<any>([]);
   const [loading, setLoading] = useState(false);
@@ -71,445 +72,51 @@ export default function LeaderBox() {
   }, [handleScroll]);
 
   return (
-    <div className="overflow-x-auto h-full" ref={containerRef}>
-      <table className="w-full border-collapse text-xl">
+    <div
+      className="overflow-x-auto h-full rounded-3xl drop-shadow-2xl"
+      ref={containerRef}
+    >
+      <table className="w-full border-collapse text-xl rounded-lg" table-fixed>
         <thead className="text-left sticky top-0 ">
-          <tr className="bg-gray-800">
-            <th className="px-4 py-2">#</th>
-            <th className="px-4 py-2">user</th>
-            <th className="px-4 py-2">wpm</th>
-            <th className="px-4 py-2">points</th>
+          <tr className="bg-gray-900 text-slate-50 ">
+            <th className="p-4 font-light text-2xl  tracking-wider ">#</th>
+            <th className="p-4 font-light text-2xl tracking-wider ">users</th>
+            <th className="p-4 font-light text-2xl  tracking-wider">wpm</th>
+            <th className="p-4  font-light text-2xl tracking-wider">points</th>
           </tr>
         </thead>
-        <tbody className="text-left">
+        <tbody className="text-left ">
           {leaderboard.map((user: any, index: any) => (
             <tr
               key={index}
               className={` ${
                 user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
+                  ? "bg-sky-600 text-black sticky top-14 "
                   : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
+                  ? "bg-gray-700/50 text-slate-300 text-lg rounded-3xl"
+                  : "bg-gray-800/65 text-slate-300 text-lg"
+              } py-4 w-full`}
               onClick={() => console.log(user.username === currentUser)}
             >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
+              <td className="px-4 py-2">{index + 1}</td>
+              <td className="px-4 py-2">
+                <div className="flex items-center gap-4">
+                  {user?.image ? (
                     <Image
                       src={user.image}
                       alt={user.name}
                       className="rounded-full"
-                      width={32}
-                      height={32}
+                      width={42}
+                      height={42}
                     />
+                  ) : (
+                    <FaUserCircle className="h-10 w-10" />
                   )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
-                </div>
-              </td>
-              <td className=" px-4 py-2">{user.maxWpm}</td>
-              <td className=" px-4 py-2">{user.totalPoints}</td>
-            </tr>
-          ))}
-          {leaderboard.map((user: any, index: any) => (
-            <tr
-              key={index}
-              className={` ${
-                user.username === currentUser
-                  ? "bg-sky-600 text-black sticky top-10 w-full"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "bg-white"
-              }`}
-              onClick={() => console.log(user.username === currentUser)}
-            >
-              <td className=" px-4 py-2">{index + 1}</td>
-              <td className=" px-4 py-2">
-                <div className="flex items-center gap-2">
-                  {user?.image && (
-                    <Image
-                      src={user.image}
-                      alt={user.name}
-                      className="rounded-full"
-                      width={32}
-                      height={32}
-                    />
-                  )}
-                  <span>{user.username}</span>
+                  <Link href={`/profile/${user.username}`}>
+                    <span className="tracking-wider text-lg">
+                      {user.username}
+                    </span>
+                  </Link>
                 </div>
               </td>
               <td className=" px-4 py-2">{user.maxWpm}</td>

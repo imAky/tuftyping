@@ -43,7 +43,8 @@ export default function NavLinks() {
         <Link
           href="/"
           className={`${
-            pathname === "/" && "border-b-2 sm:border-b-4 border-yellow-400"
+            pathname === "/" &&
+            "border-b-2 text-slate-200 sm:border-b-4 border-yellow-400"
           } p-1`}
         >
           <FaKeyboard className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
@@ -53,7 +54,7 @@ export default function NavLinks() {
           href="/leaderboard"
           className={`${
             pathname.startsWith("/leaderboard") &&
-            "border-b-2 sm:border-b-4 border-yellow-400"
+            "border-b-2 text-slate-200 sm:border-b-4 border-yellow-400"
           } p-1`}
         >
           <FaCrown className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
@@ -62,20 +63,22 @@ export default function NavLinks() {
           href="/about"
           className={`${
             pathname.startsWith("/about") &&
-            "border-b-2 sm:border-b-4 border-yellow-400"
+            "border-b-2 text-slate-200 sm:border-b-4 border-yellow-400"
           } p-1`}
         >
           <FaInfo className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
         </Link>
       </div>
       <div className="flex items-center sm:space-x-8 space-x-4">
-        <button ref={soundRef} className="" onClick={hadleSoundClick}>
-          {isMuted ? (
-            <HiSpeakerXMark className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
-          ) : (
-            <HiSpeakerWave className="sm:h-5 sm:w-5 h-4 w-4 text-slate-200" />
-          )}
-        </button>
+        {pathname === "/" && (
+          <button ref={soundRef} className="" onClick={hadleSoundClick}>
+            {isMuted ? (
+              <HiSpeakerXMark className="sm:h-5 sm:w-5 h-4 w-4 hover:text-slate-200" />
+            ) : (
+              <HiSpeakerWave className="sm:h-5 sm:w-5 h-4 w-4 text-slate-200" />
+            )}
+          </button>
+        )}
 
         <ProfileWrapper pathname={pathname} />
       </div>

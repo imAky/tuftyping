@@ -57,16 +57,18 @@ const TypingGame = () => {
               (isLoadingResuts ? (
                 <Spinner2 />
               ) : (
-                <Results
-                  className="mt-10"
-                  state={state}
-                  gameResults={gameResults}
-                  onRestart={restart}
-                />
+                <Suspense fallback={null}>
+                  <Results
+                    className="mt-10"
+                    state={state}
+                    gameResults={gameResults}
+                    onRestart={restart}
+                  />
+                </Suspense>
               ))}
           </div>
           {state !== "finish" && (
-            <Suspense>
+            <Suspense fallback={null}>
               <RestartButton
                 className="mx-auto mt-10 text-slate-500"
                 onRestart={restart}

@@ -4,8 +4,6 @@ export const isKeyboardCodeAllowed = (code: string) => {
     code.startsWith("Digit") ||
     code === "Backspace" ||
     code === "Space";
-  console.log(result);
-  console.log(code);
   return result;
 };
 

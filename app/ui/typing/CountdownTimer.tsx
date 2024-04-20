@@ -11,7 +11,7 @@ interface TimerProps {
 const CountdownTimer = ({ timeLeft, adjustTimer, state }: TimerProps) => {
   const formattedTime = formatTime(timeLeft);
   return (
-    <div className="flex items-center space-x-4 bg-gray-700  tracking-wider mt-10 mb-20 rounded-lg  shadow-md px-4 py-4">
+    <div className="flex items-center space-x-4 bg-gradient-to-r from-red-700 to-rose-800  shadow-2xl drop-shadow-2xl tracking-wider mt-10 mb-20 rounded-lg   px-4 py-4">
       {state == "start" && (
         <FaMinus
           className="h-3 w-3 cursor-pointer"

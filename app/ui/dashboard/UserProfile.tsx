@@ -29,7 +29,9 @@ export default function UserProfile({
         <h1 className="text-2xl font-bold text-slate-100 tracking-wide">
           {name}
         </h1>
-        <h4>{username}</h4>
+        <h4 className="text-md tracking-wider font-bold text-cyan-500">
+          @{username}
+        </h4>
       </div>
     </div>
   );

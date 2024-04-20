@@ -14,9 +14,9 @@ const useTypings = (enabled: boolean) => {
         return;
       }
       if (key === " ") {
-        event.preventDefault(); // Prevent default behavior for space bar
+        event.preventDefault(); //
       }
-      console.log(`end : ${{ key, code }}`);
+
       switch (key) {
         case "Backspace":
           setTyped((prev) => prev.slice(0, -1));
@@ -34,6 +34,8 @@ const useTypings = (enabled: boolean) => {
   );
 
   const clearTyped = useCallback(() => {
+    setTotalCorrChar((prev) => prev.concat(" "));
+    setTotalTypedCharacter((prev) => prev.concat(" "));
     setTyped("");
     setCursor(0);
   }, []);

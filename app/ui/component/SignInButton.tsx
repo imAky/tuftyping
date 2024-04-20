@@ -1,7 +1,7 @@
 import { signIn } from "next-auth/react";
 import { FaUser } from "react-icons/fa";
 import { LiaSignInAltSolid } from "react-icons/lia";
-import SignInPage from "./sign_in";
+// import SignInPage from "./sign_in";
 
 export default function SignInButton() {
   const handleSignIn = (e: any) => {

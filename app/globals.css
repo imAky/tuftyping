@@ -33,8 +33,19 @@
   background-color: yellow;
   color: black;
 }
-
-@keyframes custom-blink {
+.caret {
+  /* Adjust these styles to customize the caret appearance and blinking */
+  color: yellow;
+  font-size: 30px;
+  animation: blink 1s infinite;
+  position: absolute; /* Absolute positioning within the character span */
+  top: -8px; /* Top-align with character (adjust as needed) */
+  left: -10px; /* Left-align with character (adjust as needed) */
+  visibility: visible; /* Initially hidden, controlled by useTypings.js */
+  z-index: 2; /* Optional: Ensure caret stays on top of character text (adjust as needed) */
+  transition: left 0.3s ease, top 0.3s ease;
+}
+@keyframes blink {
   0%,
   100% {
     opacity: 0;
@@ -44,6 +55,14 @@
   }
 }
 
-.animate-custom-blink {
-  animation: custom-blink 1s infinite;
+.correct {
+  @apply text-slate-300;
 }
+
+.incorrect {
+  @apply text-red-500;
+}
+
+/* .caret {
+  transition: left 0.3s ease, top 0.3s ease;
+} */

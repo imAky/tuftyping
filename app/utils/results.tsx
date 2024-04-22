@@ -11,25 +11,27 @@ import connectDB from "../lib/connection";
 import { resolve } from "path";
 
 export const gameResult = async (
-  modifyChar: string,
-  actual: string,
-  expected: string,
+  totalCorrChar: string,
+  totalTypedCharacter: string,
+  totalWordsGenerated: string,
   totalTimeInSeconds: number
 ): Promise<GameResult> => {
   const session = await getServerSession(options);
   console.log("calling game result backend");
 
-  const expectedWords = expected.trim().split(/\s+/);
-  const actualWords = actual.trim().split(/\s+/);
-  const typedText = actual.trim();
-  const expectedText = expected.trim();
-  const modifyText = modifyChar.trim();
+  const expectedWords = totalWordsGenerated.trim().split(/\s+/);
+  const typedWords = totalTypedCharacter.trim().split(/\s+/);
+  const modifyWords = totalCorrChar.trim().split(/\s+/);
+  const typedText = totalTypedCharacter.trim();
+  const expectedText = totalWordsGenerated.trim();
+  const modifyText = totalCorrChar.trim();
 
   console.log("expectedWords", expectedWords);
-  console.log("actualWords", actualWords);
+  console.log("actualWords", typedWords);
   console.log("typedText", typedText);
   console.log("expectedText", expectedText);
   console.log("modifyText", modifyText);
+  console.log("typeCorrdWords", modifyWords);
 
   let wpmChar = 0;
   let corrWords = 0;
@@ -54,10 +56,11 @@ export const gameResult = async (
     }
   }
   console.log("corr", corrChar, "inc", incorrChar);
+  console.log("exp", expectedWords.length, "type", modifyWords.length);
 
-  for (let i = 0; i < expectedWords.length && i < actualWords.length; i++) {
+  for (let i = 0; i < expectedWords.length && i < modifyWords.length; i++) {
     const expWord = expectedWords[i];
-    const actWord = actualWords[i];
+    const actWord = modifyWords[i];
 
     if (expWord === actWord) {
       corrWords++;
@@ -65,10 +68,14 @@ export const gameResult = async (
     }
   }
 
+  console.log("wpm", wpmChar);
+
   const avgWpm = wpmChar / 5;
+  console.log("avgwpm", avgWpm);
   const avgRaw = corrChar / 5;
 
   const wpm = (avgWpm / totalTimeInSeconds) * 60;
+  console.log("wpm", wpm);
   const rawWpm = (avgRaw / totalTimeInSeconds) * 60;
   const acc = (corrChar / typedText.length) * 100;
 

@@ -15,6 +15,7 @@ const TypingGame = () => {
     words,
     typed,
     timeLeft,
+    wordsRef,
 
     state,
     restart,
@@ -29,7 +30,7 @@ const TypingGame = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-
+  // console.log("words", words);
   return (
     <>
       {isClient ? (
@@ -45,12 +46,12 @@ const TypingGame = () => {
             {state !== "finish" && (
               <WordsContainer keydownHandler={keydownHandler}>
                 {" "}
-                <GeneratedWords key={words} words={words} />
-                <UserTypings
+                <GeneratedWords key={words} words={words} wordsRef={wordsRef} />
+                {/* <UserTypings
                   className="absolute inset-0"
                   words={words}
                   userInput={typed}
-                />
+                /> */}
               </WordsContainer>
             )}
             {state === "finish" &&

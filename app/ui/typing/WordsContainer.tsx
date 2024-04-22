@@ -102,9 +102,7 @@ const WordsContainer = ({
         onInput={isMobile() ? handleInput : undefined}
         onBlur={handleBlur} // Handle blur event
       />
-      <div className="relative text-2xl tracking-wider max-w-5xl leading-loose break-all">
-        {children}
-      </div>
+      <div>{children}</div>
     </div>
   );
 };

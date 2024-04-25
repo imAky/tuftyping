@@ -7,6 +7,7 @@ const useTypings = (enabled: boolean, wordsRef: any, words: string) => {
   const [backspacePressed, setBackspacePressed] = useState(false);
   const [totalTypedCharacter, setTotalTypedCharacter] = useState<string>("");
   const [totalCorrChar, setTotalCorrChar] = useState<string>("");
+  const [typeError, setTypeError] = useState(0);
   const { isMuted } = useSound();
 
   const isCorrect = cursor > 0 && typed[cursor - 1] === words[cursor - 1];
@@ -55,6 +56,7 @@ const useTypings = (enabled: boolean, wordsRef: any, words: string) => {
   const resetTotalTyped = useCallback(() => {
     setTotalCorrChar("");
     setTotalTypedCharacter("");
+    setTypeError(0);
   }, []);
 
   useEffect(() => {
@@ -73,6 +75,7 @@ const useTypings = (enabled: boolean, wordsRef: any, words: string) => {
             if (isCorrect) {
               selectedSpan.classList.add("correct");
             } else {
+              setTypeError((prev) => prev + 1);
               selectedSpan.classList.add("incorrect");
             }
           }
@@ -136,6 +139,7 @@ const useTypings = (enabled: boolean, wordsRef: any, words: string) => {
     totalCorrChar,
     totalTypedCharacter,
     cursor,
+    typeError,
     clearTyped,
     resetTotalTyped,
     keydownHandler,

@@ -51,3 +51,10 @@ export const formatTime = (timeLeft: number): string => {
     return timeLeft.toString();
   }
 };
+
+export const requiredPointsMap: { [key: string]: number } = {
+  "50": 5000,
+  "100": 10000,
+  "200": 15000,
+  "500": 25000,
+};

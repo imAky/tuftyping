@@ -12,6 +12,8 @@ const userSchema = new Schema<User>(
     totalMatches: { type: Number, default: 0 },
     totalDuration: { type: Number, default: 0 },
     todayPoints: { type: Number, default: 0 },
+    totalEarning: { type: Number, default: 0 },
+    totalRedeemPoints: { type: Number, default: 0 },
     latestScores: [{ type: Schema.Types.ObjectId, ref: "Score" }],
   },
   { timestamps: true }

@@ -9,8 +9,10 @@ const DashLink = () => {
       <Link
         href="/dashboard"
         className={`${
-          pathname === "/dashboard" ? "bg-red-700" : ""
-        } w-32 text-center text-yellow-400 p-2 text-xl rounded-md tracking-wide hover:bg-red-800`}
+          pathname === "/dashboard"
+            ? "bg-gradient-to-r from-red-700 to-rose-800 text-slate-300  hover:to-rose-900"
+            : "border-2 border-slate-300 text-slate-300 "
+        } w-32 text-center p-2 text-2xl  font-medium tracking-widest rounded-lg drop-shadow-2xl  `}
         scroll={false}
       >
         Score
@@ -18,8 +20,10 @@ const DashLink = () => {
       <Link
         href="/dashboard/redeem"
         className={`${
-          pathname === "/dashboard/redeem" ? "bg-red-700" : ""
-        } w-32 text-center text-yellow-400 p-2 text-xl rounded-md tracking-wide hover:bg-red-800`}
+          pathname.startsWith("/dashboard/redeem")
+            ? "bg-gradient-to-r from-red-700 to-rose-800 text-slate-300  hover:to-rose-900"
+            : "border-2 border-slate-300 text-slate-300 "
+        } w-32 text-center p-2 text-2xl  font-medium tracking-widest rounded-lg drop-shadow-2xl `}
         scroll={false}
       >
         Redeem

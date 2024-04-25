@@ -14,9 +14,7 @@ export default function LeaderBox() {
   const containerRef = useRef<HTMLDivElement>(null);
   const session: any = useSession();
 
-  console.log("frontend", session);
   const currentUser = session?.data?.user?.username;
-  console.log("currentuser", currentUser);
 
   useEffect(() => {
     async function loadLeaderboard() {
@@ -24,7 +22,7 @@ export default function LeaderBox() {
         setLoading(true);
         const newLeaderboard: any = await fetchLeaderBoard(pageNumber);
         if (newLeaderboard.length === 0) {
-          setAllDataFetched(true); // All data fetched
+          setAllDataFetched(true);
         }
         if (initialLoad) {
           setLeaderboard(newLeaderboard);
@@ -67,7 +65,6 @@ export default function LeaderBox() {
     const container = containerRef.current;
     if (!container) return;
     container.addEventListener("scroll", handleScroll);
-    //window.addEventListener("scroll", handleScroll);
     return () => container.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
@@ -125,7 +122,6 @@ export default function LeaderBox() {
           ))}
         </tbody>
       </table>
-      {loading && <p>Loading...</p>}
     </div>
   );
 }

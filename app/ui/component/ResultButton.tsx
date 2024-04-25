@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Tooltip from "./Tooltip";
 
 interface ButtonProps {
@@ -20,7 +20,7 @@ export const ResultButton = ({ title, handleRestart }: ButtonProps) => {
     <button
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative w-48 h-[50px] bg-red-800 px-8 py-2 m-2 rounded-full text-2xl shadow-md text-yellow-500 hover:bg-red-700 tracking-wide"
+      className="relative w-48 h-[50px] bg-gradient-to-r from-red-700 to-rose-800 px-12 py-2 m-2 rounded-full text-2xl drop-shadow-2xl shadow-md text-slate-100 font-medium hover:to-rose-600 tracking-widest"
       onClick={handleRestart}
     >
       {title}

@@ -9,7 +9,8 @@ export interface User extends Document {
   totalPoints: number;
   totalMatches: number;
   totalDuration: number;
-
+  totalEarning: number;
+  totalRedeemPoints: number;
   todayPoints: number;
   latestScores: Schema.Types.ObjectId[];
 }
@@ -23,9 +24,9 @@ export interface Score extends Document {
   timeOfTypingTest: number;
 }
 
-export interface LeaderboardEntry extends Document {
-  user: Schema.Types.ObjectId;
-  score: Schema.Types.ObjectId;
+export interface Transaction extends Document {
+  userId: Schema.Types.ObjectId;
+  prize: number;
 }
 
 export type GameResult = {
@@ -33,10 +34,12 @@ export type GameResult = {
   rawWpm: number;
   acc: number;
   corrWords: number;
+  inCorrWords: number;
   corrChar: number;
   incorrChar: number;
-  errMod: number;
-  tolType: number;
+  correctTypeChar: number;
+  incorrectTypeChar: number;
+  cpm: number;
   timing: number;
   point: number;
 };

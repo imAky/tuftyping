@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import LeaderBox from "../ui/Leaderboard/LeaderBox";
 import { options } from "../api/auth/[...nextauth]/options";
 
-export default function LeaderBoard() {
+export default async function LeaderBoard() {
   return (
     <div className="flex min-h-screen flex-grow justify-between overflow-y-hidden">
       <div className="hidden md:flex flex-col   items-center   xl:w-[200px]  lg:w-1/5 md:w-1/4 ">

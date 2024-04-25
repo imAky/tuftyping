@@ -32,7 +32,7 @@ const ReedemCard = ({
         </span>
       </div>
 
-      <div className="my-4 text-blue-900 font-medium">
+      <div className="my-4 text-blue-800 text-lg font-medium">
         {points} of {totalPoints} points
       </div>
 

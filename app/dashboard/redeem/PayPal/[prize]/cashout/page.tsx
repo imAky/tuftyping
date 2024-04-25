@@ -1,25 +1,13 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
 import { fetchUsertotalPoints } from "@/app/lib/action";
-
-import { Spinner2 } from "@/app/ui/component/Spinner";
 import { ReImage, ReProgress } from "@/app/ui/dashboard/ReCom/ReCom";
 import RedeemButton from "@/app/ui/dashboard/redeem/RedeemButton";
-import { getServerSession } from "next-auth";
-import Image from "next/image";
-import { Suspense } from "react";
 import { FaRupeeSign } from "react-icons/fa";
+import { requiredPointsMap } from "@/app/utils/helpers";
 
 export default async function Page({ params }: { params: { prize: string } }) {
   const { totalPoints } = await fetchUsertotalPoints();
   const prizeValues = ["50", "100", "250", "500"];
   const prize = prizeValues.includes(params.prize) ? params.prize : "50";
-
-  const requiredPointsMap: { [key: string]: number } = {
-    "50": 10000,
-    "100": 20000,
-    "250": 30000,
-    "500": 50000,
-  };
 
   const requiredPoints = requiredPointsMap[prize];
 
@@ -51,13 +39,13 @@ export default async function Page({ params }: { params: { prize: string } }) {
         </div>
 
         <div className=" text-gray-500 my-4 text-lg font-medium tracking-wide">
-          <p className="my-2 text-gray-700 tracking-wider ">
+          <p className="my-2 text-gray-800 tracking-wider font-medium ">
             For the quickest delivery of your payment, we recommend that your
             PayPal account email matches to the email registered for your
             account and your PayPal account needs to be verified.
           </p>
           <p className="my-8 text-gray-600 tracking-wider">
-            If You don't have Paypal accoount then click here and create One.
+            If You don't have PayPal accoount then click here and create One.
           </p>
           <p className="my-4 text-gray-500 tracking-wide">
             *While every attempt is made to process your redemption as soon as

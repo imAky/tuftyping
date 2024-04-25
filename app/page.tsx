@@ -2,7 +2,6 @@ import { getServerSession } from "next-auth";
 import TypingGame from "./ui/typing/TypingGame";
 import { options } from "./api/auth/[...nextauth]/options";
 import dynamic from "next/dynamic";
-import { Spinner2 } from "./ui/component/Spinner";
 
 export default async function Home() {
   return (

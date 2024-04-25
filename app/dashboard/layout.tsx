@@ -5,11 +5,8 @@ import { getServerSession } from "next-auth";
 import { fetchUserDetail } from "../lib/action";
 import DashNav from "../ui/dashboard/DashNav";
 import DashCardWrapper from "../ui/dashboard/DashCardWrapper";
-import { Suspense } from "react";
-import LineChartSkeleton from "../ui/dashboard/LineChartSkeleton";
-import ChartWrapper from "../ui/dashboard/ChartWrapper";
-import Link from "next/link";
 import DashLink from "../ui/dashboard/DashLinks";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -25,9 +22,10 @@ export default async function DashBoardLayout({
   let userDetails;
   if (session) {
     userDetails = await fetchUserDetail();
+  } else {
+    redirect("/");
   }
 
-  console.log(userDetails?.totalMatches, userDetails?.totalDuration);
   return (
     <div className="flex flex-col  min-h-screen md:mx-48 mx-4">
       <DashNav
@@ -39,7 +37,7 @@ export default async function DashBoardLayout({
         totalDuration={userDetails?.totalDuration}
         registrationDate={userDetails?.registrationDate}
       />
-      {/* flex justify-center gap-4  flex-wrap mb-16  */}
+
       <div className="flex justify-evenly flex-wrap my-16 gap-8 bg-gradient-to-r from-indigo-800 to-blue-900 p-8 drop-shadow-2xl rounded-md">
         {userDetails && (
           <DashCardWrapper

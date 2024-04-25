@@ -4,8 +4,10 @@ import { getServerSession } from "next-auth";
 import User from "../models/User";
 import connectDB from "./connection";
 import { options } from "../api/auth/[...nextauth]/options";
-import { unstable_noStore as noStore } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import Transaction from "../models/Transaction";
+import { redirect } from "next/dist/server/api-utils";
 
 interface ScoreObject {
   date: Date;
@@ -105,7 +107,6 @@ export async function fetchUsertotalPoints() {
     const totalPoints = await User.findOne({ email }).select(
       "-_id totalPoints"
     );
-    console.log("usertotalPoints", totalPoints);
 
     return totalPoints;
   } catch (error: any) {
@@ -115,6 +116,7 @@ export async function fetchUsertotalPoints() {
 
 export async function RedeemUserPoints(prize: string) {
   const session = await getServerSession(options);
+
   try {
     if (!session?.user) {
       throw new Error("User not found");
@@ -122,23 +124,77 @@ export async function RedeemUserPoints(prize: string) {
     const email = session.user.email;
     await connectDB();
     const requiredPointsMap: { [key: string]: number } = {
-      "50": 10000,
-      "100": 20000,
-      "200": 30000,
-      "500": 50000,
+      "50": 5000,
+      "100": 10000,
+      "200": 15000,
+      "500": 25000,
     };
-    const requiredPoints = requiredPointsMap[prize];
 
-    const user = await User.findOneAndUpdate(
-      { email, totalPoints: { $gte: requiredPoints } },
-      { $inc: { totalPoints: -requiredPoints } },
-      { new: true }
+    const user = await User.findOne({ email }).select(
+      "totalDuration totalRedeemPoints createdAt totalPoints"
     );
+
     if (!user) {
-      throw new Error("Insufficient points to redeem");
+      throw new Error("Failed to fetch user details");
     }
 
-    return { message: "Redeem complete, check you mail" };
+    const requiredPoints = requiredPointsMap[prize];
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 14);
+    const isThirtyDaysOld = user.createdAt <= thirtyDaysAgo;
+    const daysLeftForRedemption = isThirtyDaysOld
+      ? 0
+      : Math.ceil(
+          (user.createdAt.getTime() - thirtyDaysAgo.getTime()) /
+            (1000 * 3600 * 24)
+        );
+
+    if (!isThirtyDaysOld) {
+      throw new Error(
+        `Account must be at least 15 days old for redemption. You need to wait ${daysLeftForRedemption} days before redeeming.
+        `
+      );
+    }
+
+    if (
+      user.totalDuration - (user.totalRedeemPoints / 2) * 60 <
+      (requiredPoints / 2) * 60
+    ) {
+      throw new Error("Insufficient practice time for redemption");
+    }
+
+    if (user.totalPoints < requiredPoints) {
+      throw new Error("You do not have enough points for redemption");
+    }
+
+    const updateResult = await User.updateOne(
+      {
+        _id: user._id,
+        totalPoints: { $gte: requiredPoints },
+      },
+      {
+        $inc: {
+          totalPoints: -requiredPoints,
+          totalRedeemPoints: requiredPoints,
+        },
+      }
+    );
+
+    if (updateResult.modifiedCount !== 1) {
+      throw new Error("Redemption failed. Please try again later");
+    }
+
+    await Transaction.create({
+      userId: user._id,
+      prize: parseInt(prize),
+    });
+
+    revalidatePath("/dashboard");
+    return {
+      message:
+        "Redemption complete. We will update you within 10 days via the Dashboard",
+    };
   } catch (error: any) {
     return { message: error.message };
   }

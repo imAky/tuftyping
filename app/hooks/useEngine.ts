@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { countErrors, isMobile } from "../utils/helpers";
+import { isMobile } from "../utils/helpers";
 import useCountdown from "./useCountdown";
 import useTypings from "./useTypings";
 import useWords from "./useWords";
@@ -12,19 +12,18 @@ const useEngine = (initialCountSeconds: number = 30) => {
   const [state, setState] = useState<State>("start");
   const [isLoadingResuts, setIsLoadingResults] = useState(false);
   const wordsRef = useRef(null);
-
   const [countdownSeconds, setCountdownSeconds] =
     useState<number>(initialCountSeconds);
-
   const { timeLeft, startCountdown, resetCountdown } =
     useCountdown(countdownSeconds);
   const { words, updateWords } = useWords(isMobile() ? 5 : 30); // related
-
+  let isAdsOn = true;
   const {
     cursor,
     typed,
     totalCorrChar,
     clearTyped,
+    typeError,
     totalTypedCharacter,
     resetTotalTyped,
     keydownHandler,
@@ -36,10 +35,12 @@ const useEngine = (initialCountSeconds: number = 30) => {
     rawWpm: 0,
     acc: 0,
     corrWords: 0,
+    inCorrWords: 0,
+    correctTypeChar: 0,
+    incorrectTypeChar: 0,
     corrChar: 0,
     incorrChar: 0,
-    errMod: 0,
-    tolType: 0,
+    cpm: 0,
     timing: 0,
     point: 0,
   });
@@ -47,14 +48,12 @@ const useEngine = (initialCountSeconds: number = 30) => {
 
   const isStarting = state === "start" && cursor > 0;
   const areWordsFinished = cursor === words.length;
-  if (areWordsFinished) console.log("cursen", cursor, "words", words.length);
 
   const restart = useCallback(() => {
     resetCountdown();
     resetTotalTyped();
     setTotalWordsGenerated("");
     setState("start");
-
     updateWords();
     clearTyped();
   }, [clearTyped, updateWords, resetCountdown, resetTotalTyped]);
@@ -83,15 +82,14 @@ const useEngine = (initialCountSeconds: number = 30) => {
       const calculateResult = async () => {
         try {
           const gameresult = await gameResult(
+            isAdsOn,
+            typeError,
             totalCorrChar,
             totalTypedCharacter,
             totalWordsGenerated,
             countdownSeconds
           );
-          console.log("totalChar", totalCorrChar);
-          console.log("totalTypedChar", totalTypedCharacter);
-          console.log("totalWordsGenerated", totalWordsGenerated);
-          console.log("countdownSeconds", countdownSeconds);
+
           setGameResults(gameresult);
         } catch (error) {
           console.error("Error calculating results", error);
@@ -133,8 +131,6 @@ const useEngine = (initialCountSeconds: number = 30) => {
   return {
     state,
     words,
-    typed,
-
     restart,
     timeLeft,
     isLoadingResuts,

@@ -3,24 +3,19 @@ import useEngine from "@/app/hooks/useEngine";
 import CountdownTimer from "./CountdownTimer";
 import GeneratedWords from "./GeneratedWords";
 import WordsContainer from "./WordsContainer";
-import UserTypings from "./UserTypings";
 import RestartButton from "./RestartButton";
 import Results from "./Results";
 import { Suspense, useEffect, useState } from "react";
-import { Spinner2 } from "../component/Spinner";
-import dynamic from "next/dynamic";
+import { MainSpinner } from "../component/Spinner";
 
 const TypingGame = () => {
   const {
     words,
-    typed,
     timeLeft,
     wordsRef,
-
     state,
     restart,
     isLoadingResuts,
-
     adjustTimer,
     gameResults,
     keydownHandler,
@@ -30,10 +25,9 @@ const TypingGame = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  // console.log("words", words);
   return (
     <>
-      {isClient ? (
+      {isClient && (
         <div className="flex flex-grow  mb-8 flex-col items-center ">
           {state !== "finish" && (
             <CountdownTimer
@@ -47,20 +41,14 @@ const TypingGame = () => {
               <WordsContainer keydownHandler={keydownHandler}>
                 {" "}
                 <GeneratedWords key={words} words={words} wordsRef={wordsRef} />
-                {/* <UserTypings
-                  className="absolute inset-0"
-                  words={words}
-                  userInput={typed}
-                /> */}
               </WordsContainer>
             )}
             {state === "finish" &&
               (isLoadingResuts ? (
-                <Spinner2 />
+                <MainSpinner className="absolute inset-0 flex items-center justify-center" />
               ) : (
                 <Suspense fallback={null}>
                   <Results
-                    className="mt-10"
                     state={state}
                     gameResults={gameResults}
                     onRestart={restart}
@@ -77,8 +65,6 @@ const TypingGame = () => {
             </Suspense>
           )}
         </div>
-      ) : (
-        <Spinner2 />
       )}
     </>
   );

@@ -29,7 +29,7 @@ export const isMobile = () => {
       userAgent
     );
   }
-  return false; // Default to false if window or navigator is not available
+  return false;
 };
 
 export const formatTime = (timeLeft: number): string => {
@@ -57,4 +57,12 @@ export const requiredPointsMap: { [key: string]: number } = {
   "100": 10000,
   "200": 15000,
   "500": 25000,
+};
+
+export const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear() % 100;
+  return `${day}/${month}/${year}`;
 };

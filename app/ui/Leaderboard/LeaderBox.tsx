@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
+import { ImSpinner8 } from "react-icons/im";
+import { useRouter } from "next/navigation";
 export default function LeaderBox() {
   const [leaderboard, setLeaderboard] = useState<any>([]);
   const [loading, setLoading] = useState(false);
@@ -13,6 +15,7 @@ export default function LeaderBox() {
   const [allDataFetched, setAllDataFetched] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const session: any = useSession();
+  const router = useRouter();
 
   const currentUser = session?.data?.user?.username;
 
@@ -33,8 +36,9 @@ export default function LeaderBox() {
             ...newLeaderboard,
           ]);
         }
-      } catch (err) {
-        console.error("Error loading leaderboard: ", err);
+      } catch (err: any) {
+        alert(err.message);
+        router.push("/");
       } finally {
         setLoading(false);
       }
@@ -73,8 +77,8 @@ export default function LeaderBox() {
       className="overflow-x-auto h-full rounded-3xl drop-shadow-2xl"
       ref={containerRef}
     >
-      <table className="w-full border-collapse text-xl rounded-lg" table-fixed>
-        <thead className="text-left sticky top-0 ">
+      <table className="w-full border-collapse text-xl rounded-lg">
+        <thead className="text-left sticky top-0 table-auto">
           <tr className="bg-gray-900 text-slate-50 ">
             <th className="p-4 font-light text-2xl  tracking-wider ">#</th>
             <th className="p-4 font-light text-2xl tracking-wider ">users</th>
@@ -93,7 +97,6 @@ export default function LeaderBox() {
                   ? "bg-gray-700/50 text-slate-300 text-lg rounded-3xl"
                   : "bg-gray-800/65 text-slate-300 text-lg"
               } py-4 w-full`}
-              onClick={() => console.log(user.username === currentUser)}
             >
               <td className="px-4 py-2">{index + 1}</td>
               <td className="px-4 py-2">
@@ -120,6 +123,15 @@ export default function LeaderBox() {
               <td className=" px-4 py-2">{user.totalPoints}</td>
             </tr>
           ))}
+          {loading && (
+            <tr className="w-full">
+              <td className="text-center py-4" colSpan={4}>
+                <div className="flex justify-center items-center">
+                  <ImSpinner8 className="animate-spin h-6 w-6 text-slate-100" />
+                </div>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

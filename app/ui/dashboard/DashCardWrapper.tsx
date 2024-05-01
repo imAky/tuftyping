@@ -1,14 +1,13 @@
 import { BiSolidCoinStack } from "react-icons/bi";
 import DashCard from "./DashCard";
-import { FaBolt, FaLightbulb, FaPercent } from "react-icons/fa";
-import { getServerSession } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import { FaBolt, FaKeyboard, FaPercent, FaRupeeSign } from "react-icons/fa";
 
 interface DashCardProps {
   totalPoints: number;
   todayPoints: number;
   maxWpm: number;
   totalMatches: number;
+  totalEarning: number;
 }
 
 export default async function DashCardWrapper({
@@ -16,9 +15,8 @@ export default async function DashCardWrapper({
   todayPoints,
   maxWpm,
   totalMatches,
+  totalEarning,
 }: DashCardProps) {
-  //await new Promise((resolve) => setTimeout(resolve, 3000));
-
   return (
     <>
       <DashCard
@@ -36,9 +34,17 @@ export default async function DashCardWrapper({
         icon={<FaPercent className="h-4 w-4" />}
         score={maxWpm}
       />
+
+      {totalEarning > 0 && (
+        <DashCard
+          title="Earnings"
+          icon={<FaRupeeSign className="h-4 w-4" />}
+          score={totalEarning}
+        />
+      )}
       <DashCard
         title="Matches"
-        icon={<FaLightbulb className="h-4 w-4" />}
+        icon={<FaKeyboard className="h-4 w-4" />}
         score={totalMatches}
       />
     </>

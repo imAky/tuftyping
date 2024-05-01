@@ -1,5 +1,6 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import { fetchTransactionDetails } from "@/app/lib/admin";
+
+import Transaction from "@/app/ui/admin/Transaction";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -21,9 +22,11 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-300">
-      <div className="w-2/6 ">Transaction</div>
-      <main>{children}</main>
+    <div className="flex flex-col flex-wrap sm:flex-row min-h-screen bg-emerald-300">
+      <div className="m-2">
+        <Transaction />
+      </div>
+      <main className="flex-grow">{children}</main>
     </div>
   );
 }

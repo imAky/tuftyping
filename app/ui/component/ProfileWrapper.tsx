@@ -1,8 +1,6 @@
 import { useSession } from "next-auth/react";
 import Profile from "./Profile";
 import SignInButton from "./SignInButton";
-import { useEffect, useState } from "react";
-import { resolve } from "path";
 import { Spinner } from "./Spinner";
 
 export default function ProfileWrapper({ pathname }: { pathname: string }) {

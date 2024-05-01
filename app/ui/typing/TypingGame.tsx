@@ -36,7 +36,7 @@ const TypingGame = () => {
               state={state}
             />
           )}
-          <div className="flex justify-center items-start max-sm:-mt-4">
+          <div className="flex justify-center items-start -mt-8">
             {state !== "finish" && (
               <WordsContainer keydownHandler={keydownHandler}>
                 {" "}

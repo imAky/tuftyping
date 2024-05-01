@@ -45,12 +45,12 @@ export default async function Page({ params }: { params: { prize: string } }) {
             account and your PayPal account needs to be verified.
           </p>
           <p className="my-8 text-gray-600 tracking-wider">
-            If You don't have PayPal accoount then click here and create One.
+            If You don't have PayPal accoount then create one.
           </p>
           <p className="my-4 text-gray-500 tracking-wide">
             *While every attempt is made to process your redemption as soon as
-            possible, rewards may take up to 10 business days to receive,
-            although they usually arrive much sooner.
+            possible, rewards may take up to 48 hours to receive, although they
+            usually arrive much sooner.
           </p>
         </div>
       </div>

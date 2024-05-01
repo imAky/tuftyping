@@ -4,7 +4,6 @@ interface DashCardProp {
   title: string;
   icon: ReactElement<SVGAElement>;
   score: number;
-  active?: boolean;
 }
 
 export default function DashCard({ title, icon, score }: DashCardProp) {

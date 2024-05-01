@@ -6,16 +6,13 @@ export default function DashNav({
   name,
   username,
   email,
-  totalMatches,
   totalDuration,
   registrationDate,
-}: //
-{
+}: {
   image?: string;
   name: string;
   username: string;
   email?: string;
-  totalMatches: number | undefined;
   totalDuration: number | undefined;
   registrationDate: string | undefined;
 }) {
@@ -24,7 +21,7 @@ export default function DashNav({
       <div className="p-4 ">
         <UserProfile image={image} name={name} username={username} />
       </div>
-      {/* <div className="flex flex-grow flex-wrap p-4 justify-around "> */}
+
       {email && (
         <div className="flex flex-col space-y-1 p-4">
           <h1 className="text-md tracking-wider font-bold text-cyan-500">
@@ -49,11 +46,12 @@ export default function DashNav({
         </h1>
         {totalDuration && (
           <span className="sm:text-xl text-lg text-slate-200 font-semibold tracking-wider">
-            {formatTime(totalDuration)}
+            {totalDuration < 60
+              ? `${totalDuration}s`
+              : formatTime(totalDuration)}
           </span>
         )}
       </div>
     </div>
-    // </div>
   );
 }

@@ -1,0 +1,24 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://localhost:3000/</loc>
+  </url>
+  <url>
+    <loc>https://localhost:3000/dashboard</loc>
+  </url>
+   <url>
+    <loc>https://localhost:3000/dashboard/redeem</loc>
+  </url>
+  <url>
+    <loc>https://localhost:3000/leaderboard</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/about</loc>
+    
+  </url>
+  <url>
+    <loc>https://localhost:3000/privacy-policy</loc>
+  </url>
+  <url>
+    <loc>https://localhost:3000/terms-of-service</loc>
+  </url>
+</urlset>

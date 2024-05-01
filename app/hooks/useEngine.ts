@@ -16,7 +16,7 @@ const useEngine = (initialCountSeconds: number = 30) => {
     useState<number>(initialCountSeconds);
   const { timeLeft, startCountdown, resetCountdown } =
     useCountdown(countdownSeconds);
-  const { words, updateWords } = useWords(isMobile() ? 5 : 30); // related
+  const { words, updateWords } = useWords(isMobile() ? 5 : 30);
   let isAdsOn = true;
   const {
     cursor,
@@ -100,10 +100,6 @@ const useEngine = (initialCountSeconds: number = 30) => {
       calculateResult();
     }
   }, [timeLeft, state]);
-
-  /**
-   * when the current words are all filled up, we generate and show another set of words
-   */
 
   useEffect(() => {
     if (areWordsFinished) {

@@ -13,11 +13,3 @@ export const MainSpinner = ({ className }: { className: string }) => {
     </div>
   );
 };
-
-export const ProgressSpinner = () => {
-  return (
-    <div className="absolute inset-0  flex items-center justify-center">
-      <span className="progress-loader"></span>
-    </div>
-  );
-};

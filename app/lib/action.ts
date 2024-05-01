@@ -4,10 +4,11 @@ import { getServerSession } from "next-auth";
 import User from "../models/User";
 import connectDB from "./connection";
 import { options } from "../api/auth/[...nextauth]/options";
-import { unstable_noStore as noStore, revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 import Transaction from "../models/Transaction";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation";
+import mongoose, { startSession } from "mongoose";
+import Score from "../models/Score";
 
 interface ScoreObject {
   date: Date;
@@ -23,31 +24,33 @@ export async function fetchUserDetail() {
 
   try {
     if (!session?.user) {
-      throw new Error("User not found");
+      throw new Error("User not sign In");
     }
     const email = session.user.email;
     await connectDB();
     const user = await User.findOne({ email }).select(
-      "maxWpm totalPoints totalMatches todayPoints totalDuration createdAt"
+      "maxWpm totalPoints totalMatches todayPoints totalDuration totalEarning createdAt"
     );
     if (!user) {
-      throw new Error("User not found in the database");
+      throw new Error("User not found");
     }
     const registrationDate = new Date(user.createdAt);
     const day = registrationDate.getDate();
     const month = registrationDate.toLocaleString("en-us", { month: "short" });
     const year = registrationDate.getFullYear();
     const formattedRegistrationDate = `${day} ${month} ${year}`;
+
     return {
       maxWpm: parseFloat(user.maxWpm.toFixed(2)),
       totalPoints: parseFloat(user.totalPoints),
       totalMatches: parseFloat(user.totalMatches),
       todayPoints: parseFloat(user.todayPoints),
+      totalEarning: user.totalEarning,
       totalDuration: parseFloat(user.totalDuration),
       registrationDate: formattedRegistrationDate,
     };
   } catch (error: any) {
-    console.error("Error fetching user details:", error);
+    throw new Error(`fetching user details - ${error.message}`);
   }
 }
 
@@ -55,7 +58,7 @@ export async function fetchUserScore() {
   const session = await getServerSession(options);
   try {
     if (!session?.user) {
-      throw new Error("User not found");
+      throw new Error("User not sign In");
     }
     const email = session.user.email;
     await connectDB();
@@ -73,7 +76,7 @@ export async function fetchUserScore() {
     }));
     return latestScores;
   } catch (error: any) {
-    console.error("Error fetching user details:", error);
+    throw new Error(`fetching user score graph: ${error.message}`);
   }
 }
 
@@ -83,16 +86,16 @@ export async function fetchLeaderBoard(
 ) {
   try {
     await connectDB();
-    const leaderboard = await User.find()
+
+    const leaderboard = await User.find({ totalDuration: { $gte: 600 } })
       .select("-_id name username image totalPoints maxWpm")
       .sort({ maxWpm: -1, totalPoints: -1, createdAt: 1 })
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
       .lean();
-
     return leaderboard;
-  } catch (error) {
-    console.error("Error fetching user details:", error);
+  } catch (error: any) {
+    throw new Error(`fetching leaderboard. ${error.message}`);
   }
 }
 
@@ -116,6 +119,7 @@ export async function fetchUsertotalPoints() {
 
 export async function RedeemUserPoints(prize: string) {
   const session = await getServerSession(options);
+  let mongoSession;
 
   try {
     if (!session?.user) {
@@ -167,7 +171,8 @@ export async function RedeemUserPoints(prize: string) {
     if (user.totalPoints < requiredPoints) {
       throw new Error("You do not have enough points for redemption");
     }
-
+    mongoSession = await startSession();
+    mongoSession.startTransaction();
     const updateResult = await User.updateOne(
       {
         _id: user._id,
@@ -178,7 +183,8 @@ export async function RedeemUserPoints(prize: string) {
           totalPoints: -requiredPoints,
           totalRedeemPoints: requiredPoints,
         },
-      }
+      },
+      { session: mongoSession }
     );
 
     if (updateResult.modifiedCount !== 1) {
@@ -189,13 +195,18 @@ export async function RedeemUserPoints(prize: string) {
       userId: user._id,
       prize: parseInt(prize),
     });
-
+    await mongoSession.commitTransaction();
+    mongoSession.endSession();
     revalidatePath("/dashboard");
     return {
       message:
-        "Redemption complete. We will update you within 10 days via the Dashboard",
+        "Redemption complete. We will update you within 48 hours via the Dashboard",
     };
   } catch (error: any) {
+    if (mongoSession) {
+      mongoSession.abortTransaction();
+      mongoSession.endSession();
+    }
     return { message: error.message };
   }
 }
@@ -207,7 +218,7 @@ export async function fetchUserByUsername(username: string) {
       " maxWpm image username name totalPoints totalMatches todayPoints totalDuration createdAt"
     );
     if (!user) {
-      throw new Error("User not found in the database");
+      throw new Error("User not found");
     }
     const registrationDate = new Date(user.createdAt);
     const day = registrationDate.getDate();
@@ -225,7 +236,7 @@ export async function fetchUserByUsername(username: string) {
       name: user.name,
     };
   } catch (error: any) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 
@@ -246,6 +257,47 @@ export async function fetchUserScoreByUsername(username: string) {
     }));
     return latestScores;
   } catch (error: any) {
-    console.error("Error fetching user details:", error);
+    throw new Error(error.message);
+  }
+}
+
+export async function DeleteUserAccount(username?: string) {
+  const sessiondata: any = await getServerSession(options);
+  if (!sessiondata) {
+    throw new Error("User not found");
+  }
+
+  let userIdToDelete = sessiondata?.user.id;
+  if (username) {
+    try {
+      const userToDelete = await User.findOne({ username }, { _id: 1 });
+      if (!userToDelete) {
+        throw new Error("User not found");
+      }
+      userIdToDelete = userToDelete._id;
+    } catch (error: any) {
+      return {
+        message: error.message,
+      };
+    }
+  }
+
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    await User.deleteOne({ _id: userIdToDelete }).session(session);
+    await Score.deleteMany({ user: userIdToDelete }).session(session);
+    await Transaction.deleteMany({ userId: userIdToDelete }).session(session);
+
+    await session.commitTransaction();
+    session.endSession();
+    return { message: "Account deleted successfully" };
+  } catch (error: any) {
+    await sessiondata.abortTransaction();
+    sessiondata.endSession();
+    return {
+      message: error.message,
+    };
   }
 }

@@ -2,7 +2,6 @@
 import { useEffect, useRef } from "react";
 import { Chart } from "chart.js";
 
-// Import necessary components from Chart.js
 import {
   LineController,
   LineElement,
@@ -19,7 +18,6 @@ const LineChart = ({ labels, datasets }) => {
   useEffect(() => {
     const ctx = chartRef.current.getContext("2d");
 
-    // Register Chart.js controllers, elements, and scales for line chart
     Chart.register(
       LineController,
       LineElement,
@@ -70,25 +68,25 @@ const LineChart = ({ labels, datasets }) => {
         scales: {
           x: {
             grid: {
-              color: "rgba(255,255,255,0.1)", // Change the color of the x-axis grid lines
+              color: "rgba(255,255,255,0.1)",
             },
             ticks: {
-              color: "black", // Change the color of the x-axis labels
+              color: "black",
             },
           },
           y: {
             grid: {
-              color: "rgba(255,255,255,0.1)", // Change the color of the y-axis grid lines
+              color: "rgba(255,255,255,0.1)",
             },
             ticks: {
-              color: "black", // Change the color of the y-axis labels
+              color: "black",
             },
           },
         },
       },
     });
 
-    return () => myChart.destroy(); // Cleanup function
+    return () => myChart.destroy();
   }, []);
 
   return <canvas ref={chartRef} style={{ height: "100%" }} />;

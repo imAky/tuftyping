@@ -1,4 +1,3 @@
-import { time } from "console";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { formatTime } from "@/app/utils/helpers";
 

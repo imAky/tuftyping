@@ -1,13 +1,11 @@
-import { Span } from "next/dist/trace";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { signOut } from "next-auth/react";
 import NavList from "./NavList";
-import { usePathname } from "next/navigation";
 interface User {
   name?: string | null | undefined;
   email?: string | null | undefined;
   image?: string | null | undefined;
+  username?: string | null | undefined;
 }
 
 interface ProfileProps {
@@ -44,8 +42,8 @@ const Profile = ({ user, pathname }: ProfileProps) => {
           </span>
         )}
       </button>
-      {user?.email && user?.name && navlist && (
-        <NavList name={user?.name} email={user?.email} />
+      {user?.username && user?.name && navlist && (
+        <NavList name={user?.name} username={user?.username} />
       )}
     </div>
   );

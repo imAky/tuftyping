@@ -1,5 +1,3 @@
-import React from "react";
-
 const Tooltip = ({
   toolText,
   topPosition = "-top-1.5",

@@ -1,5 +1,3 @@
-import React, { useRef, useEffect } from "react";
-
 const GeneratedWords = ({
   words,
   wordsRef,

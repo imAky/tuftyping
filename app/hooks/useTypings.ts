@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { isKeyboardCodeAllowed } from "../utils/helpers";
 import { useSound } from "@/app/context/typing/SoundContext";
 const useTypings = (enabled: boolean, wordsRef: any, words: string) => {
@@ -20,6 +20,12 @@ const useTypings = (enabled: boolean, wordsRef: any, words: string) => {
       }
       if (key === " ") {
         event.preventDefault();
+      }
+      if (!isMuted) {
+        const audio = new Audio("/sounds/cherry.wav");
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play();
       }
 
       switch (key) {
@@ -111,29 +117,7 @@ const useTypings = (enabled: boolean, wordsRef: any, words: string) => {
 
     updateCharacterColorAndCaret();
   }, [typed, wordsRef, cursor]);
-  useEffect(() => {
-    const playTypingSound = () => {
-      const audio = new Audio("/sounds/typingsound4.wav");
-      audio.pause(); // Pause previous sound
-      audio.currentTime = 0; // Reset audio to the beginning
-      audio.play();
-    };
 
-    const playErrorSound = () => {
-      const audio = new Audio("/sounds/typingsound2.wav");
-      audio.pause(); // Pause previous sound
-      audio.currentTime = 0; // Reset audio to the beginning
-      audio.play();
-    };
-
-    if (!isMuted) {
-      if (isCorrect) {
-        playTypingSound();
-      } else {
-        playErrorSound();
-      }
-    }
-  }, [isCorrect, isMuted]);
   return {
     typed,
     totalCorrChar,

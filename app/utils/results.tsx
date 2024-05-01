@@ -62,7 +62,7 @@ export const gameResult = async (
   const acc = Math.max((correctTypeChar / typedText.length) * 100, 0);
 
   let point = 0;
-  if (wpm >= 20 && acc >= 75 && isAdsOn) {
+  if (wpm >= 25 && acc >= 75 && isAdsOn) {
     const minutes = totalTimeInSeconds / 60;
     point = Math.floor(minutes * 2);
   }
@@ -95,7 +95,7 @@ export const gameResult = async (
         }
       }
 
-      if (user.latestScores.length >= 7) {
+      if (user.latestScores.length >= 3) {
         const oldestScoreId = user.latestScores[0];
         await Score.findByIdAndDelete(oldestScoreId);
         user.latestScores.shift();
@@ -134,14 +134,13 @@ export const gameResult = async (
         $push: {
           latestScores: {
             $each: [score._id],
-            $slice: -7,
+            $slice: -3,
           },
         },
         $max: { maxWpm: wpm },
       });
-      throw new Error("User not found");
     } catch (error: any) {
-      console.log("Error update user and saving score", error.message);
+      console.error("Result Error:", error.message);
     }
     revalidatePath("/dashboard");
   }

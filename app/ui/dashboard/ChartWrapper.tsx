@@ -1,6 +1,5 @@
 import { fetchUserScore } from "@/app/lib/action";
 import LineChart from "./LineChart";
-import Link from "next/link";
 
 export default async function ChartWrapper() {
   const userScore = await fetchUserScore();
@@ -19,11 +18,6 @@ export default async function ChartWrapper() {
   return (
     <>
       <div className="mb-16 block ">
-        {/* <div className="flex items-center justify-center my-4">
-          <span className="bg-yellow-500 text-red-500 p-4 rounded-md">
-            Last 7 Wpm
-          </span>
-        </div> */}
         <LineChart
           labels={labels}
           datasets={[

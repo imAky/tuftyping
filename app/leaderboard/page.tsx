@@ -1,6 +1,9 @@
-import { getServerSession } from "next-auth";
+import { Metadata } from "next";
 import LeaderBox from "../ui/Leaderboard/LeaderBox";
-import { options } from "../api/auth/[...nextauth]/options";
+
+export const metadata: Metadata = {
+  title: "LeaderBoard",
+};
 
 export default async function LeaderBoard() {
   return (
@@ -8,7 +11,8 @@ export default async function LeaderBoard() {
       <div className="hidden md:flex flex-col   items-center   xl:w-[200px]  lg:w-1/5 md:w-1/4 ">
         <div className=""></div>
       </div>
-      <div className="max-w-4xl flex-grow    h-[800px] overflow-y-auto mx-4">
+
+      <div className="max-w-4xl flex-grow h-[800px] overflow-y-auto mx-4">
         <LeaderBox />
       </div>
 

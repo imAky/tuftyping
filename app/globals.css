@@ -33,6 +33,10 @@
   background-color: yellow;
   color: black;
 }
+body ::selection {
+  background-color: yellow;
+  color: black;
+}
 .caret {
   /* Adjust these styles to customize the caret appearance and blinking */
   color: yellow;
@@ -80,42 +84,6 @@
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-
-/* .caret {
-  transition: left 0.3s ease, top 0.3s ease;
-} */
-
-.progress-loader {
-  display: block;
-  position: relative;
-  height: 12px;
-  width: 300px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.progress-loader::after {
-  content: "";
-  width: 40%;
-  height: 100%;
-  background: #eab308;
-  position: absolute;
-  top: 0;
-  left: 0;
-  box-sizing: border-box;
-  animation: animloader 2s linear infinite;
-}
-
-@keyframes animloader {
-  0% {
-    left: 0;
-    transform: translateX(-100%);
-  }
-  100% {
-    left: 100%;
-    transform: translateX(0%);
   }
 }
 

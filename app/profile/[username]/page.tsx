@@ -1,8 +1,4 @@
-import {
-  fetchUserByUsername,
-  fetchUserScoreByUsername,
-} from "@/app/lib/action";
-import ChartWrapper from "@/app/ui/dashboard/ChartWrapper";
+import { fetchUserByUsername } from "@/app/lib/action";
 import DashCardWrapper from "@/app/ui/dashboard/DashCardWrapper";
 import DashNav from "@/app/ui/dashboard/DashNav";
 import LineChartSkeleton from "@/app/ui/dashboard/LineChartSkeleton";
@@ -22,7 +18,6 @@ export default async function Page({
         image={userDetails.image}
         name={userDetails.name}
         username={params.username}
-        totalMatches={userDetails?.totalMatches}
         totalDuration={userDetails?.totalDuration}
         registrationDate={userDetails?.registrationDate}
       />
@@ -33,6 +28,7 @@ export default async function Page({
             todayPoints={userDetails.todayPoints}
             maxWpm={userDetails.maxWpm}
             totalMatches={userDetails.totalMatches}
+            totalEarning={userDetails.totalEarning}
           />
         )}
       </div>

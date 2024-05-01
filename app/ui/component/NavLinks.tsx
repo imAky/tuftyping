@@ -2,17 +2,12 @@
 import { useSound } from "@/app/context/typing/SoundContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { FaCrown, FaKeyboard } from "react-icons/fa";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
-import { IoLogoGameControllerB } from "react-icons/io";
 import { FaInfo } from "react-icons/fa";
-import { Spinner, Spinner2 } from "./Spinner";
-import Profile from "./Profile";
-import SignInButton from "./SignInButton";
-import { Session } from "next-auth";
-import { useSession } from "next-auth/react";
 import ProfileWrapper from "./ProfileWrapper";
+import Logo from "@/app/icons/Logo";
 
 export default function NavLinks() {
   const { isMuted, toggleMenu } = useSound();
@@ -27,18 +22,20 @@ export default function NavLinks() {
   return (
     <>
       <div className="flex items-center sm:space-x-8 space-x-4">
-        <Link
-          href="/"
-          className="text-yellow-500 sm:text-4xl text-sm  font-bold tracking-wider"
-        >
-          <span className="sm:hidden flex flex-col  ">
-            <span className="text-yellow-500">type</span>
-            <span className="text-red-400">champ</span>
-          </span>
-          <span className="hidden sm:flex">
-            <span className="text-yellow-500">type</span>
-            <span className="text-red-500">champ</span>
-          </span>
+        <Link href="/">
+          <div className="flex space-x-1">
+            <div
+              style={{ width: 80, height: 28 }}
+              className="md:py-2 -mr-4 -ml-4 -pt-1"
+            >
+              <Logo width={80} height={38} />
+            </div>
+
+            <div className="text-2xl gap-1  text-slate-300  py-1 tracking-wider hidden md:flex ">
+              <span className="tracking-widest font-extrabold">TYPING</span>
+              <span className="font-thin tracking-widest">BATTLE</span>
+            </div>
+          </div>
         </Link>
         <Link
           href="/"

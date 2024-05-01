@@ -1,14 +1,13 @@
-import { NextAuthOptions, Session } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 
 import GoogleProvider from "next-auth/providers/google";
 import ConnectDB from "@/app/lib/connection";
 import User from "@/app/models/User";
-import connectDB from "@/app/lib/connection";
 
 export const options: NextAuthOptions = {
   session: {
-    strategy: "jwt", // Use JWT for session storage
-    maxAge: 30 * 24 * 60 * 60, // Set session expiration to 30 days (optional)
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
   },
   providers: [
     GoogleProvider({
@@ -48,7 +47,6 @@ export const options: NextAuthOptions = {
             );
           }
         } else {
-          // Generate username based on the user's first name
           let firstName = "";
           if (user.name) {
             if (user.name.includes(" ")) {
@@ -57,7 +55,7 @@ export const options: NextAuthOptions = {
               firstName = user.name.toLowerCase();
             }
           } else {
-            firstName = "anonymous"; // Default value when user.name is undefined
+            firstName = "anonymous";
           }
 
           let username = firstName;
@@ -83,7 +81,6 @@ export const options: NextAuthOptions = {
     },
 
     async session({ session }: { session: any }) {
-      // Return the session object as is
       if (session.user) {
         const sessionUser = await User.findOne({ email: session.user.email });
         session.user.id = sessionUser._id;
@@ -93,7 +90,6 @@ export const options: NextAuthOptions = {
       return session;
     },
     async jwt({ token, account }) {
-      // Persist the OAuth access_token and or the user id to the token right after signin
       if (account) {
         token.accessToken = account.access_token;
       }

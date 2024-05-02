@@ -22,7 +22,6 @@ export const options: NextAuthOptions = {
       },
     }),
   ],
-  secret: process.env.AUTH_SECRET,
   callbacks: {
     async signIn({ user }) {
       await ConnectDB();

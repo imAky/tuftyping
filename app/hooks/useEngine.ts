@@ -64,6 +64,7 @@ const useEngine = (initialCountSeconds: number = 30) => {
         prevTotalWordsGenerated.concat(" ", words)
       );
     } else {
+      setTotalWordsGenerated(words);
       isFirstRender.current = false;
     }
   }, [words]);

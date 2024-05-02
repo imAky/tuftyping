@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/console/",
     },
-    sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xl`,
+    sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml`,
   };
 }

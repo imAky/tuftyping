@@ -8,25 +8,21 @@
   }
 }
 
-/* Hide the scrollbar track */
 ::-webkit-scrollbar-track {
-  background-color: #272932; /* Light gray background color */
+  background-color: #272932;
 }
 
-/* Define the scrollbar */
 ::-webkit-scrollbar {
-  width: 4px; /* Set the width of the scrollbar */
+  width: 4px;
 }
 
-/* Define the scrollbar handle */
 ::-webkit-scrollbar-thumb {
-  background-color: #8e7c75; /* Medium gray color */
-  border-radius: 0px; /* Rounded corners for the scrollbar handle */
+  background-color: #8e7c75;
+  border-radius: 0px;
 }
 
-/* Define the scrollbar handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #8e7c75; /* Darker gray color on hover */
+  background-color: #8e7c75;
 }
 
 .privacy-policy ::selection {
@@ -38,15 +34,14 @@ body ::selection {
   color: black;
 }
 .caret {
-  /* Adjust these styles to customize the caret appearance and blinking */
   color: yellow;
   font-size: 30px;
   animation: blink 1s infinite;
-  position: absolute; /* Absolute positioning within the character span */
-  top: -8px; /* Top-align with character (adjust as needed) */
-  left: -10px; /* Left-align with character (adjust as needed) */
-  visibility: visible; /* Initially hidden, controlled by useTypings.js */
-  z-index: 2; /* Optional: Ensure caret stays on top of character text (adjust as needed) */
+  position: absolute;
+  top: -8px;
+  left: -10px;
+  visibility: visible;
+  z-index: 2;
   transition: left 0.3s ease, top 0.3s ease;
 }
 @keyframes blink {

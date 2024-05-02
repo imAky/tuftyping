@@ -37,7 +37,7 @@ export default async function DashBoardLayout({
         registrationDate={userDetails?.registrationDate}
       />
 
-      <div className="flex justify-evenly flex-wrap mt-8 mb-8 gap-2 bg-gradient-to-r from-indigo-800 to-blue-900 p-8 drop-shadow-2xl rounded-md">
+      <div className="flex justify-evenly flex-wrap mt-8 mb-8 gap-2 gap-y-6 bg-gradient-to-r from-indigo-800 to-blue-900 p-8 drop-shadow-2xl rounded-md">
         {userDetails && (
           <DashCardWrapper
             totalPoints={userDetails.totalPoints}

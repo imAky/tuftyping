@@ -22,24 +22,33 @@ export default async function ProfileChartWrapper({
   return (
     <>
       <div className="mb-16 block ">
-        <LineChart
-          labels={labels}
-          datasets={[
-            { label: "Wpm", data: wpmData, color: "#36a2eb", timeOfTypingTest },
-            {
-              label: "Raw Wpm",
-              data: rawWpmData,
-              color: "#ff6384",
-              timeOfTypingTest,
-            },
-            {
-              label: "Points",
-              data: pointsData,
-              color: "#ffce56",
-              timeOfTypingTest,
-            },
-          ]}
-        />
+        {userScore.length !== 0 ? (
+          <LineChart
+            labels={labels}
+            datasets={[
+              {
+                label: "Wpm",
+                data: wpmData,
+                color: "#36a2eb",
+                timeOfTypingTest,
+              },
+              {
+                label: "Raw Wpm",
+                data: rawWpmData,
+                color: "#ff6384",
+                timeOfTypingTest,
+              },
+              {
+                label: "Points",
+                data: pointsData,
+                color: "#ffce56",
+                timeOfTypingTest,
+              },
+            ]}
+          />
+        ) : (
+          <span className="text-red-700 font-bold mt-8 ">* No Score</span>
+        )}
       </div>
     </>
   );

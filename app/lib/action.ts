@@ -215,7 +215,7 @@ export async function fetchUserByUsername(username: string) {
   try {
     await connectDB();
     const user = await User.findOne({ username }).select(
-      " maxWpm image username name totalPoints totalMatches todayPoints totalDuration createdAt"
+      " maxWpm image username name totalPoints totalMatches todayPoints totalDuration totalEarning createdAt"
     );
     if (!user) {
       throw new Error("User not found");
@@ -230,6 +230,7 @@ export async function fetchUserByUsername(username: string) {
       totalPoints: parseFloat(user.totalPoints),
       totalMatches: parseFloat(user.totalMatches),
       todayPoints: parseFloat(user.todayPoints),
+      totalEarning: user.totalEarning,
       totalDuration: parseFloat(user.totalDuration),
       registrationDate: formattedRegistrationDate,
       image: user.image,

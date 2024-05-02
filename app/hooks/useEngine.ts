@@ -78,24 +78,20 @@ const useEngine = (initialCountSeconds: number = 30) => {
   useEffect(() => {
     if (!timeLeft && state === "run") {
       setIsLoadingResults(true);
-      setState("finish");
-      const calculateResult = async () => {
-        try {
-          const gameresult = await gameResult(
-            isAdsOn,
-            typeError,
-            totalCorrChar,
-            totalTypedCharacter,
-            totalWordsGenerated,
-            countdownSeconds
-          );
 
-          setGameResults(gameresult);
-        } catch (error) {
-          console.error("Error calculating results", error);
-        } finally {
-          setIsLoadingResults(false);
-        }
+      const calculateResult = async () => {
+        const gameresult = await gameResult(
+          isAdsOn,
+          typeError,
+          totalCorrChar,
+          totalTypedCharacter,
+          totalWordsGenerated,
+          countdownSeconds
+        );
+
+        setGameResults(gameresult);
+        setIsLoadingResults(false);
+        setState("finish");
       };
       calculateResult();
     }
@@ -103,7 +99,6 @@ const useEngine = (initialCountSeconds: number = 30) => {
 
   useEffect(() => {
     if (areWordsFinished) {
-      if (areWordsFinished) console.log("words", cursor, "words", words.length);
       updateWords();
       clearTyped();
     }

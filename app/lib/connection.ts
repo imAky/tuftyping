@@ -13,6 +13,5 @@ export default async function connectDB() {
     isConnected = true;
   } catch (error) {
     console.error("MongoDB connection error", error);
-    throw new Error("Unable to connect to MongoDB");
   }
 }

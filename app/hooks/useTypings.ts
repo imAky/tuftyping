@@ -18,9 +18,6 @@ const useTypings = (enabled: boolean, wordsRef: any, words: string) => {
       if (!enabled || !isKeyboardCodeAllowed(code)) {
         return;
       }
-      if (key === " ") {
-        event.preventDefault();
-      }
       if (!isMuted) {
         const audio = new Audio("/sounds/cherry.wav");
         audio.pause();

@@ -25,7 +25,7 @@ const Results = ({
   }
 
   return (
-    <div className="flex flex-col text-center w-11/12 max-w-5xl mx-8 my-8  py-4 rounded-2xl ">
+    <div className="flex flex-col text-center w-11/12 max-w-5xl sm:mx-8 my-8  py-4 rounded-2xl ">
       <div className="flex flex-wrap   justify-evenly  ">
         <ResultCard
           title="wpm"

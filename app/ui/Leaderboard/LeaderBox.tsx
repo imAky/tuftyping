@@ -80,10 +80,18 @@ export default function LeaderBox() {
       <table className="w-full border-collapse text-xl rounded-lg">
         <thead className="text-left sticky top-0 table-auto">
           <tr className="bg-gray-900 text-slate-50 ">
-            <th className="p-4 font-light text-2xl  tracking-wider ">#</th>
-            <th className="p-4 font-light text-2xl tracking-wider ">users</th>
-            <th className="p-4 font-light text-2xl  tracking-wider">wpm</th>
-            <th className="p-4  font-light text-2xl tracking-wider">points</th>
+            <th className="p-4  font-light sm:text-xl text-sm tracking-wider ">
+              #
+            </th>
+            <th className="p-4  font-light sm:text-xl text-sm tracking-wider ">
+              users
+            </th>
+            <th className="p-4  font-light sm:text-xl text-sm tracking-wider">
+              wpm
+            </th>
+            <th className="p-4   font-light sm:text-xl text-sm tracking-wider">
+              points
+            </th>
           </tr>
         </thead>
         <tbody className="text-left ">
@@ -98,22 +106,22 @@ export default function LeaderBox() {
                   : "bg-gray-800/65 text-slate-300 text-lg"
               } py-4 w-full`}
             >
-              <td className="px-4 py-2">{index + 1}</td>
-              <td className="px-4 py-2">
-                <div className="flex items-center gap-4">
+              <td className="sm:px-4 px-1 py-2">{index + 1}</td>
+              <td className="sm:px-4 px-1 py-2">
+                <div className="flex items-center sm:gap-4 gap-2">
                   {user?.image ? (
                     <Image
                       src={user.image}
                       alt={user.name}
                       className="rounded-full"
-                      width={42}
-                      height={42}
+                      width={38}
+                      height={38}
                     />
                   ) : (
                     <FaUserCircle className="h-10 w-10" />
                   )}
                   <Link href={`/profile/${user.username}`}>
-                    <span className="tracking-wider text-lg">
+                    <span className="tracking-wider sm:text-lg text-sm">
                       {user.username}
                     </span>
                   </Link>

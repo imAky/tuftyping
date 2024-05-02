@@ -25,11 +25,13 @@ const WordsContainer = ({
 
   const handleKeydown: KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (!isMobile()) {
+      event.preventDefault();
       keydownHandler(event);
     }
   };
   const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
     if (isMobile()) {
+      event.preventDefault();
       const input = event.target as HTMLInputElement;
       const currentValue = input.value;
 

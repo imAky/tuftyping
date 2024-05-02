@@ -21,7 +21,7 @@ export default async function Page({
         totalDuration={userDetails?.totalDuration}
         registrationDate={userDetails?.registrationDate}
       />
-      <div className="flex justify-evenly flex-wrap my-16 gap-8 bg-gradient-to-r from-indigo-800 to-blue-900 p-8 drop-shadow-2xl rounded-md">
+      <div className="flex justify-evenly flex-wrap my-16 gap-2 gap-y-6 bg-gradient-to-r from-indigo-800 to-blue-900 p-8 drop-shadow-2xl rounded-md">
         {userDetails && (
           <DashCardWrapper
             totalPoints={userDetails.totalPoints}

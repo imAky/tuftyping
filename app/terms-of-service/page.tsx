@@ -16,10 +16,7 @@ export default function Page() {
         <h1 className="text-yellow-400 font-extrabold text-3xl tracking-wider ">
           Terms of Service
         </h1>
-        <h4 className="text-gray-300 font-extrabold tracking-wider text-lg leading-7">
-          Effective Date:
-          <span className="font-medium text-lg ml-4">19 Apr 2024</span>
-        </h4>
+       
 
         <h3 className="text-yellow-400 font-medium tracking-wider text-lg leading-7">
           Agreement

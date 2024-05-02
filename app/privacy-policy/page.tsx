@@ -15,10 +15,7 @@ export default function Page() {
         <h1 className="text-yellow-400 font-extrabold text-3xl tracking-wider ">
           Privacy Policy
         </h1>
-        <h4 className="text-gray-300 font-extrabold tracking-wider text-lg leading-7">
-          Effective Date:
-          <span className="font-medium text-md ml-4">19 Apr 2024</span>
-        </h4>
+
         <p className="text-zinc-300 leading-7 font-medium tracking-wider text-md">
           Welcome to TypingBattle! At TypingBattle, we are committed to
           protecting your privacy. This Privacy Policy outlines how we collect,

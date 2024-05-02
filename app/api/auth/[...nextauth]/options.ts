@@ -7,7 +7,6 @@ import User from "@/app/models/User";
 export const options: NextAuthOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
   },
   providers: [
     GoogleProvider({
@@ -87,12 +86,6 @@ export const options: NextAuthOptions = {
       }
 
       return session;
-    },
-    async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token;
-      }
-      return token;
     },
   },
 };

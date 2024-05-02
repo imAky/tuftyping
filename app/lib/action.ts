@@ -87,7 +87,7 @@ export async function fetchLeaderBoard(
   try {
     await connectDB();
 
-    const leaderboard = await User.find({ totalDuration: { $gte: 600 } })
+    const leaderboard = await User.find({ totalDuration: { $gte: 15 } })
       .select("-_id name username image totalPoints maxWpm")
       .sort({ maxWpm: -1, totalPoints: -1, createdAt: 1 })
       .skip((pageNumber - 1) * pageSize)
